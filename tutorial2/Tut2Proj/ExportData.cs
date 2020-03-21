@@ -8,7 +8,10 @@ namespace Tut2Proj
     class ExportData
     {
         // TO RUN:
+        // xml serialization:
         // dotnet run "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/inputData.csv" "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/outputData.xml" xml
+        // json serialization:
+        // dotnet run "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/inputData.csv" "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/outputData.json" json
 
         static void Main(string[] args)
         {
