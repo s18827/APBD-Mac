@@ -1,4 +1,5 @@
-using System.Linq;
+using System;
+using System.Text.RegularExpressions;
 using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
@@ -16,8 +17,23 @@ namespace Tut2Proj
 
         static void Main(string[] args)
         {
+            var students = ReadData(@args[0]);
+            var activeStudies = ConvertToList(Studies.fieldOfStudyNumOfPpl);
+            SerializeData(@args[1], @args[2], students, activeStudies);
+        }
+
+        private static IEnumerable<Student> ReadData(string inputPath)
+        {
+            if (!Regex.IsMatch(inputPath, "((?:[a-zA-Z]\\:){0,1}(?:[\\/][\\w.]+){1,})")) throw new ArgumentException("The path is incorrect");
+            FileInfo inputFile = new FileInfo(inputPath);
+            if (!inputFile.Exists) throw new FileNotFoundException("File does not exist");
+            var studentList = FillListWithStudents(inputFile);
+            return studentList;
+        }
+
+        private static IEnumerable<Student> FillListWithStudents(FileInfo inputFile)
+        {
             var list = new List<Student>();
-            FileInfo inputFile = new FileInfo(@args[0]);
             using (var stream = new StreamReader(inputFile.OpenRead()))
             {
                 string line = null;
@@ -36,25 +52,42 @@ namespace Tut2Proj
                         FathersName = student[8]
                     });
                 }
-                //list = GetCountOfStudies(hashSet).Keys.ToList();
-                FileStream writer = new FileStream(@args[1], FileMode.Create);
-                if (args[2] == "xml")
-                {
-                    XmlSerializer xmlSerializerStud = new XmlSerializer(typeof(List<Student>), new XmlRootAttribute("university"));
-                    xmlSerializerStud.Serialize(writer, list);
-                    XmlSerializer xmlSerializerAStudies = new XmlSerializer(typeof(List<ActiveStudies>), new XmlRootAttribute("activeStudies"));
-                    var activeStudies = convertToSet(Studies.fieldOfStudyNumOfPpl);
-                    xmlSerializerAStudies.Serialize(writer, activeStudies);
-                }
-                if (args[2] == "json")
-                {
-                    var jsonString = JsonSerializer.Serialize(list);
-                    File.WriteAllText(@args[1], jsonString);
-                }
             }
+            return list;
         }
-        // converts map of active fields of study and ppl attending them to list of Studies
-        private static IEnumerable<ActiveStudies> convertToSet(Dictionary<string, int> dictionary)
+
+        private static ISerializer SelectSerializer(string format)
+        {
+            ISerializer serializer;
+            switch (format)
+            {
+                case "xml":
+                    {
+                        System.Console.WriteLine("XML serialization selected");
+                        serializer = new MyXmlSerializer();
+                        break;
+                    }
+                case "json":
+                    {
+                        System.Console.WriteLine("JSON serialization selected");
+                        serializer = new MyJsonSerializer();
+                        break;
+                    }
+                default: throw new ArgumentException("format not supported");
+            }
+            return serializer;
+        }
+
+        private static void SerializeData(string outputPath, string format, IEnumerable<Student> sList, IEnumerable<ActiveStudies> asList)
+        {
+            FileStream writer = new FileStream(outputPath, FileMode.Create);
+            var selectedSerializer = SelectSerializer(format);
+            selectedSerializer.SerializeStudents(sList, writer);
+            selectedSerializer.SerializeActiveStudies(asList, writer);
+        }
+
+        // converts map of active studies and number of atendees to list of ActiveStudies
+        private static IEnumerable<ActiveStudies> ConvertToList(Dictionary<string, int> dictionary)
         {
             var activeStudiesList = new List<ActiveStudies>();
             foreach (var VARIABLE in dictionary)
@@ -68,8 +101,7 @@ namespace Tut2Proj
             return activeStudiesList;
         }
         // TODO:
-        // problem with already existing students (log.txtg)
-        // json structure improvement
-        // error handling
+        // problem with already existing students (log.txt)
+
     }
 }

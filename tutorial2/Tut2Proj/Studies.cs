@@ -21,11 +21,6 @@ namespace Tut2Proj
         [XmlElement("mode")]
         public string Mode { get; set; }
 
-        // public static Dictionary<string, int> FieldOfStudyNumOfPpl { 
-        //     get { return fieldOfStudyNumOfPpl; }
-        //     set { fieldOfStudyNumOfPpl = new Dictionary<string, int>(); }
-        // }
-        //public static int NumOfPpl { get; set; }
         public static Studies StudiesResolver(string studiesName, string studiesMode)
         {
             if (!fieldOfStudyNumOfPpl.ContainsKey(studiesName))
@@ -38,8 +33,5 @@ namespace Tut2Proj
             }
             return new Studies(studiesName, studiesMode);
         }
-
-        
-
     }
 }
