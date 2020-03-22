@@ -4,12 +4,14 @@ using System;
 
 namespace Tut2Proj
 {
+    [XmlType(TypeName="student")]
     public class Student
     {
         [XmlAttribute(AttributeName = "indexNumber")]
         public string SNumber { get; set; }
 
         [XmlElement(ElementName = "fname")]
+        // [JsonPropertyName("fname")]
         public string FName { get; set; }
 
         [XmlElement(ElementName = "lname")]
@@ -27,8 +29,7 @@ namespace Tut2Proj
         [XmlElement(ElementName = "fathersName")]
         public string FathersName { get; set; }
 
-        [XmlElement(ElementName = "studies")]
-        public Studies Studies { get; set; }
-
+         [XmlElement(ElementName = "studies")]
+         public Studies Studies { get; set; }
     }
 }

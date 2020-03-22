@@ -1,3 +1,4 @@
+using System.Linq;
 using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
@@ -16,8 +17,6 @@ namespace Tut2Proj
         static void Main(string[] args)
         {
             var list = new List<Student>();
-            var studiesList = new List<Studies>();
-
             FileInfo inputFile = new FileInfo(@args[0]);
             using (var stream = new StreamReader(inputFile.OpenRead()))
             {
@@ -29,26 +28,23 @@ namespace Tut2Proj
                     {
                         FName = student[0],
                         LName = student[1],
-                        Studies = new Studies(student[2],student[3]),
+                        Studies = Studies.StudiesResolver(student[2], student[3]),
                         SNumber = student[4],
                         Birthdate = student[5],
                         EmailAddress = student[6],
                         MothersName = student[7],
                         FathersName = student[8]
                     });
-                    // if (!studiesList.Exists(Studies.Name, student[2]))
-                    // {
-                    //     studiesList.Add(new Studies(student[2], student[3]));
-                    // }else
-                    // {
-                    //     Studies.NumOfPpl++;
-                    // }
                 }
+                //list = GetCountOfStudies(hashSet).Keys.ToList();
                 FileStream writer = new FileStream(@args[1], FileMode.Create);
                 if (args[2] == "xml")
                 {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Student>), new XmlRootAttribute("university"));
-                    xmlSerializer.Serialize(writer, list);
+                    XmlSerializer xmlSerializerStud = new XmlSerializer(typeof(List<Student>), new XmlRootAttribute("university"));
+                    xmlSerializerStud.Serialize(writer, list);
+                    XmlSerializer xmlSerializerAStudies = new XmlSerializer(typeof(List<ActiveStudies>), new XmlRootAttribute("activeStudies"));
+                    var activeStudies = convertToSet(Studies.fieldOfStudyNumOfPpl);
+                    xmlSerializerAStudies.Serialize(writer, activeStudies);
                 }
                 if (args[2] == "json")
                 {
@@ -57,10 +53,22 @@ namespace Tut2Proj
                 }
             }
         }
+        // converts map of active fields of study and ppl attending them to list of Studies
+        private static IEnumerable<ActiveStudies> convertToSet(Dictionary<string, int> dictionary)
+        {
+            var activeStudiesList = new List<ActiveStudies>();
+            foreach (var VARIABLE in dictionary)
+            {
+                activeStudiesList.Add(new ActiveStudies
+                {
+                    Name = VARIABLE.Key,
+                    NumOfStud = VARIABLE.Value
+                });
+            }
+            return activeStudiesList;
+        }
         // TODO:
-        // add resources management (using(){})
         // problem with already existing students (log.txtg)
-        // problem with already existing studiesField & adding ppl to them
         // json structure improvement
         // error handling
     }

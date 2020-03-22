@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <university xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Student indexNumber="459">
+  <student indexNumber="459">
     <fname>Paweł</fname>
     <lname>Nowak1</lname>
     <birthdate>2000-02-12 00:00:00.000</birthdate>
@@ -11,8 +11,8 @@
       <name>Informatyka dzienne</name>
       <mode>Dzienne</mode>
     </studies>
-  </Student>
-  <Student indexNumber="1123">
+  </student>
+  <student indexNumber="1123">
     <fname>A</fname>
     <lname>B</lname>
     <birthdate>2000-12-01 00:00:00.000</birthdate>
@@ -23,5 +23,9 @@
       <name>Informatyka zaoczne</name>
       <mode>Zaoczne</mode>
     </studies>
-  </Student>
-</university>
+  </student>
+</university><?xml version="1.0"?>
+<activeStudies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <studies name="Informatyka dzienne" numberOfStudents="1" />
+  <studies name="Informatyka zaoczne" numberOfStudents="1" />
+</activeStudies>
