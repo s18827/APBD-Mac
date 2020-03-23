@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using Tut2Proj.Models;
 
-namespace Tut2Proj
+namespace Tut2Proj.Services
 {
     public class MyJsonSerializer : ISerializer
     {

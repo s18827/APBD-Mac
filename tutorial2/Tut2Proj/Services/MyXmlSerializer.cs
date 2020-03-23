@@ -1,8 +1,9 @@
 using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using Tut2Proj.Models;
 
-namespace Tut2Proj
+namespace Tut2Proj.Services
 {
     public class MyXmlSerializer : ISerializer
     {

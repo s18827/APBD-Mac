@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
+using Tut2Proj.Models;
 
-namespace Tut2Proj
+namespace Tut2Proj.Services
 {
     public interface ISerializer
     {

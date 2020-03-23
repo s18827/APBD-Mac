@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using System;
 
-namespace Tut2Proj
+namespace Tut2Proj.Models
 {
     [XmlType(TypeName="student")]
     public class Student
