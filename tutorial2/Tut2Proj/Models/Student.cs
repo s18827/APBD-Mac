@@ -4,7 +4,7 @@ using System;
 
 namespace Tut2Proj.Models
 {
-    [XmlType(TypeName="student")]
+    [XmlType(TypeName = "student")]
     public class Student
     {
         [XmlAttribute(AttributeName = "indexNumber")]
@@ -23,13 +23,19 @@ namespace Tut2Proj.Models
         [XmlElement(ElementName = "email")]
         public string EmailAddress { get; set; }
 
-        [XmlElement(ElementName = "morhersName")]
+        [XmlElement(ElementName = "mothersName")]
         public string MothersName { get; set; }
 
         [XmlElement(ElementName = "fathersName")]
         public string FathersName { get; set; }
 
-         [XmlElement(ElementName = "studies")]
-         public Studies Studies { get; set; }
+        [XmlElement(ElementName = "studies")]
+        public Studies Studies { get; set; }
+
+        // for returning error info into log.txt
+        public string GetInfo()
+        {
+            return FName + "," + LName + "," + Studies.Name + "," + Studies.Mode + "," + SNumber + "," + Birthdate + "," + EmailAddress + "," + MothersName + "," + FathersName;
+        }
     }
 }

@@ -12,8 +12,10 @@ namespace Tut2Proj
     class ExportData
     {
         // TO RUN:
+
         // xml serialization:
         // dotnet run "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/inputData.csv" "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/outputData.xml" xml
+
         // json serialization:
         // dotnet run "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/inputData.csv" "/Users/azyl/Git-Uni/APBD-Mac/tutorial2/outputData.json" json
 
@@ -36,12 +38,56 @@ namespace Tut2Proj
         private static IEnumerable<Student> FillListWithStudents(FileInfo inputFile)
         {
             var list = new List<Student>();
+            var errorList = new List<Student>();
+            FileInfo errorLog = new FileInfo("log.txt");
+            FileStream errorWriter = new FileStream("log.txt", FileMode.Create);
             using (var stream = new StreamReader(inputFile.OpenRead()))
             {
                 string line = null;
                 while ((line = stream.ReadLine()) != null)
                 {
                     string[] student = line.Split(',');
+                    // try // add exception info to the file
+                    // {
+                    Student st = new Student
+                    {
+                        FName = student[0],
+                        LName = student[1],
+                        Studies = Studies.StudiesResolver(student[2], student[3]),
+                        SNumber = student[4],
+                        Birthdate = student[5],
+                        EmailAddress = student[6],
+                        MothersName = student[7],
+                        FathersName = student[8]
+                    };
+                    foreach (var field in student)
+                    {
+                        if (field == "")
+                        {
+                            System.Console.WriteLine("Empty value found...");
+                            errorList.Add(st);
+                            System.Console.WriteLine("Writing student to log.txt...");
+                            File.WriteAllText("log.txt", st.GetInfo());
+                            goto REPEAT;
+                        }
+                    }
+                    // if (student[i] == "") // value missing
+                    // {
+                    //     System.Console.WriteLine("Empty value found...");
+                    //     errorList.Add(st = new Student
+                    //     {
+                    //         FName = student[0],
+                    //         LName = student[1],
+                    //         Studies = Studies.StudiesResolver(student[2], student[3]),
+                    //         SNumber = student[4],
+                    //         Birthdate = student[5],
+                    //         EmailAddress = student[6],
+                    //         MothersName = student[7],
+                    //         FathersName = student[8]
+                    //     });
+                        
+                    //     continue;
+                    // }
                     list.Add(new Student
                     {
                         FName = student[0],
@@ -53,6 +99,11 @@ namespace Tut2Proj
                         MothersName = student[7],
                         FathersName = student[8]
                     });
+                    // }catch (System.IndexOutOfRangeException ex)
+                    // {
+
+                    // };
+                    REPEAT: continue;
                 }
             }
             return list;
