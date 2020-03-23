@@ -5,27 +5,40 @@
     <lname>Nowak1</lname>
     <birthdate>2000-02-12 00:00:00.000</birthdate>
     <email>nowak@pjwstk.edu.pl</email>
-    <morhersName>Alina</morhersName>
+    <mothersName>Alina</mothersName>
     <fathersName>Adam</fathersName>
     <studies>
       <name>Informatyka dzienne</name>
       <mode>Dzienne</mode>
     </studies>
   </student>
-  <student indexNumber="1123">
-    <fname>A</fname>
-    <lname>B</lname>
-    <birthdate>2000-12-01 00:00:00.000</birthdate>
-    <email>ab@pjwstk.edu.pl</email>
-    <morhersName>C</morhersName>
-    <fathersName>D</fathersName>
+  <student indexNumber="2321">
+    <fname>Zenon</fname>
+    <lname>Aran</lname>
+    <birthdate>1999-02-11 00:00:00.000</birthdate>
+    <email>zenonarr@pjwstk.edu.pl</email>
+    <mothersName>Dorota</mothersName>
+    <fathersName>Marcel</fathersName>
     <studies>
-      <name>Informatyka zaoczne</name>
+      <name>Architektura Wnętrz zaoczne</name>
       <mode>Zaoczne</mode>
+    </studies>
+  </student>
+  <student indexNumber="459">
+    <fname>Paweł</fname>
+    <lname>Nowak1</lname>
+    <birthdate>2000-02-12 00:00:00.000</birthdate>
+    <email>nowak@pjwstk.edu.pl</email>
+    <mothersName>Alina</mothersName>
+    <fathersName>Adam</fathersName>
+    <studies>
+      <name>Informatyka dzienne</name>
+      <mode>Dzienne</mode>
     </studies>
   </student>
 </university><?xml version="1.0"?>
 <activeStudies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <studies name="Informatyka dzienne" numberOfStudents="1" />
+  <studies name="Informatyka dzienne" numberOfStudents="4" />
   <studies name="Informatyka zaoczne" numberOfStudents="1" />
+  <studies name="Architektura Wnętrz zaoczne" numberOfStudents="2" />
 </activeStudies>
