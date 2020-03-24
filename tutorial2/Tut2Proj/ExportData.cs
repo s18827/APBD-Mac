@@ -65,8 +65,8 @@ namespace Tut2Proj
                             MothersName = student[7],
                             FathersName = student[8]
                         };
-                        if (errHandler.ContainsEmptyField(personCount, student, st)) goto REPEAT;
-                        if (errHandler.ContainRepeatValue(personCount, list, st)) goto REPEAT;
+                        if (errHandler.ContainsEmptyField(personCount, student, st)) continue;
+                        if (errHandler.ContainRepeatValue(personCount, list, st)) continue;
                         Studies.AddToOrActivateStudies(st.HisStudies);
                         list.Add(st);
                     }
@@ -74,7 +74,6 @@ namespace Tut2Proj
                     {
                         errHandler.WriteErrorToLog(ex, personCount);
                     };
-                REPEAT: continue;
                 }
             }
             errHandler.CloseLogWriter();
@@ -128,5 +127,9 @@ namespace Tut2Proj
             return activeStudiesList;
         }
 
+
+        // TODO:
+        // how to make Json file look better after serialization
+        // <activeStudies/> inside <university/>
     }
 }
