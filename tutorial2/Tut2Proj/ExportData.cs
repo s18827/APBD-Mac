@@ -38,8 +38,7 @@ namespace Tut2Proj
         private static IEnumerable<Student> FillListWithStudents(FileInfo inputFile)
         {
             var list = new List<Student>();
-            string errFilePath = "log.txt";
-            StudentErrorHandler errHandler = new StudentErrorHandler(errFilePath);
+            StudentErrorHandler errHandler = new StudentErrorHandler("log.txt");
             using (var stream = new StreamReader(inputFile.OpenRead()))
             {
                 int personCount = 0;
@@ -48,7 +47,7 @@ namespace Tut2Proj
                 {
                     string[] student = line.Split(',');
                     personCount++;
-                    try // add exception info to the file
+                    try
                     {
                         Studies studies = new Studies
                         {
@@ -82,59 +81,6 @@ namespace Tut2Proj
             return list;
         }
 
-        // private static bool ContainRepeatValue()
-        // {
-        //     using (StreamWriter writer = new StreamWriter(errFilePath, true))
-        //     {
-        //         foreach (var field in student) // do this without loop and goto ?
-        //         {
-        //             if (field == "")
-        //             {
-        //                 System.Console.WriteLine("Empty value found...");
-        //                 System.Console.WriteLine("Writing error info + student info to log.txt...");
-        //                 writer.WriteLine("----------------------------------------------------------------------------");
-        //                 writer.WriteLine("Message : Empty value of argument in person No.: " + personNo + ":\n\t" + st.GetInfo());
-        //                 return true;
-        //             }
-        //         }
-        //         return false;
-        //     }
-        // }
-        // private static bool ContainsEmptyField(int personNo, string errFilePath, string[] student, Student st)
-        // {
-        //     using (StreamWriter writer = new StreamWriter(errFilePath, true))
-        //     {
-        //         foreach (var field in student) // do this without loop and goto ?
-        //         {
-        //             if (field == "")
-        //             {
-        //                 System.Console.WriteLine("Empty value found...");
-        //                 System.Console.WriteLine("Writing error info + student info to log.txt...");
-        //                 writer.WriteLine("----------------------------------------------------------------------------");
-        //                 writer.WriteLine("Message : Empty value of argument in person No.: " + personNo + ":\n\t" + st.GetInfo());
-        //                 return true;
-        //             }
-        //         }
-        //         return false;
-        //     }
-        // }
-        // private static void WriteErrorToLog(Exception ex, int personNo, string errFilePath)
-        // {
-        //     using (StreamWriter writer = new StreamWriter(errFilePath, true))
-        //     {
-        //         while (ex != null)
-        //         {
-        //             System.Console.WriteLine("Missing argument found...");
-        //             System.Console.WriteLine("Writing error info to log.txt...");
-        //             writer.WriteLine("----------------------------------------------------------------------------");
-        //             writer.WriteLine(ex.GetType().FullName);
-        //             writer.WriteLine("Message : " + "Mising argument in person No: " + personNo);
-        //             writer.WriteLine("StackTrace : " + ex.StackTrace);
-        //             ex = ex.InnerException;
-        //         }
-        //     }
-        // }
-
         private static ISerializer SelectSerializer(string format)
         {
             ISerializer serializer;
@@ -159,10 +105,12 @@ namespace Tut2Proj
 
         private static void SerializeData(string outputPath, string format, IEnumerable<Student> sList, IEnumerable<ActiveStudies> asList)
         {
-            FileStream writer = new FileStream(outputPath, FileMode.Create);
-            var selectedSerializer = SelectSerializer(format);
-            selectedSerializer.SerializeStudents(sList, writer);
-            selectedSerializer.SerializeActiveStudies(asList, writer);
+            using (FileStream writer = new FileStream(outputPath, FileMode.Create))
+            {
+                var selectedSerializer = SelectSerializer(format);
+                selectedSerializer.SerializeStudents(sList, writer);
+                selectedSerializer.SerializeActiveStudies(asList, writer);
+            }
         }
 
         // converts map of active studies and number of atendees to list of ActiveStudies

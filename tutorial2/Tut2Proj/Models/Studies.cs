@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Tut2Proj.Models
 {
@@ -16,9 +17,12 @@ namespace Tut2Proj.Models
         public Studies() { } // for serialization
 
         [XmlElement("name")]
+        [JsonPropertyName("name")]
+
         public string Name { get; set; }
 
         [XmlElement("mode")]
+        [JsonPropertyName("mode")]
         public string Mode { get; set; }
 
         public static void AddToOrActivateStudies(Studies studies) // could be done better

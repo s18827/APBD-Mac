@@ -1,35 +1,43 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Tut2Proj.Models
 {
-    [XmlType(TypeName = "student")]
+    [XmlType("student")]
     public class Student
     {
-        [XmlAttribute(AttributeName = "indexNumber")]
+        [XmlAttribute("indexNumber")]
+        [JsonPropertyName("indexNumber")]
         public string SNumber { get; set; }
 
-        [XmlElement(ElementName = "fname")]
-        // [JsonPropertyName("fname")]
+        [XmlElement("fname")]
+        [JsonPropertyName("fname")]
         public string FName { get; set; }
 
-        [XmlElement(ElementName = "lname")]
+        [XmlElement("lname")]
+        [JsonPropertyName("lname")]
         public string LName { get; set; }
 
-        [XmlElement(ElementName = "birthdate")]
+        [XmlElement("birthdate")]
+        [JsonPropertyName("birthdate")]
         public string Birthdate { get; set; }
 
-        [XmlElement(ElementName = "email")]
+        [XmlElement("email")]
+        [JsonPropertyName("email")]
         public string EmailAddress { get; set; }
 
-        [XmlElement(ElementName = "mothersName")]
+        [XmlElement("mothersName")]
+        [JsonPropertyName("mothersName")]
         public string MothersName { get; set; }
 
-        [XmlElement(ElementName = "fathersName")]
+        [XmlElement("fathersName")]
+        [JsonPropertyName("fathersName")]
         public string FathersName { get; set; }
 
-        [XmlElement(ElementName = "studies")]
+        [XmlElement("studies")]
+        [JsonPropertyName("studies")]
         public Studies HisStudies { get; set; }
 
         // for returning error info into log.txt
