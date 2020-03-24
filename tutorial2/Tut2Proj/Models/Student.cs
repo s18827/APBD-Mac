@@ -30,12 +30,12 @@ namespace Tut2Proj.Models
         public string FathersName { get; set; }
 
         [XmlElement(ElementName = "studies")]
-        public Studies Studies { get; set; }
+        public Studies HisStudies { get; set; }
 
         // for returning error info into log.txt
         public string GetInfo()
         {
-            return FName + "," + LName + "," + Studies.Name + "," + Studies.Mode + "," + SNumber + "," + Birthdate + "," + EmailAddress + "," + MothersName + "," + FathersName;
+            return FName + "," + LName + "," + HisStudies.Name + "," + HisStudies.Mode + "," + SNumber + "," + Birthdate + "," + EmailAddress + "," + MothersName + "," + FathersName;
         }
     }
 }

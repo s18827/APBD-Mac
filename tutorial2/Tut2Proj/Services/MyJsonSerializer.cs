@@ -8,8 +8,6 @@ namespace Tut2Proj.Services
 {
     public class MyJsonSerializer : ISerializer
     {
-        // private Json serializeStudent;
-        // private XmlSerializer serializerActiveStudies;
         public void SerializeStudents(IEnumerable<Student> students, FileStream writer)
         {
             System.Console.WriteLine("students serialization in progress...");

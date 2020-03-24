@@ -21,17 +21,16 @@ namespace Tut2Proj.Models
         [XmlElement("mode")]
         public string Mode { get; set; }
 
-        public static Studies StudiesResolver(string studiesName, string studiesMode)
+        public static void AddToOrActivateStudies(Studies studies) // could be done better
         {
-            if (!fieldOfStudyNumOfPpl.ContainsKey(studiesName))
+            if (!fieldOfStudyNumOfPpl.ContainsKey(studies.Name))
             {
-                fieldOfStudyNumOfPpl.Add(studiesName, 1);
+                fieldOfStudyNumOfPpl.Add(studies.Name, 1);
             }
             else
             {
-                fieldOfStudyNumOfPpl[studiesName]++;
+                fieldOfStudyNumOfPpl[studies.Name]++;
             }
-            return new Studies(studiesName, studiesMode);
         }
     }
 }

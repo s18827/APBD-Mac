@@ -38,76 +38,102 @@ namespace Tut2Proj
         private static IEnumerable<Student> FillListWithStudents(FileInfo inputFile)
         {
             var list = new List<Student>();
-            var errorList = new List<Student>();
-            FileInfo errorLog = new FileInfo("log.txt");
-            FileStream errorWriter = new FileStream("log.txt", FileMode.Create);
+            string errFilePath = "log.txt";
+            StudentErrorHandler errHandler = new StudentErrorHandler(errFilePath);
             using (var stream = new StreamReader(inputFile.OpenRead()))
             {
+                int personCount = 0;
                 string line = null;
                 while ((line = stream.ReadLine()) != null)
                 {
                     string[] student = line.Split(',');
-                    // try // add exception info to the file
-                    // {
-                    Student st = new Student
+                    personCount++;
+                    try // add exception info to the file
                     {
-                        FName = student[0],
-                        LName = student[1],
-                        Studies = Studies.StudiesResolver(student[2], student[3]),
-                        SNumber = student[4],
-                        Birthdate = student[5],
-                        EmailAddress = student[6],
-                        MothersName = student[7],
-                        FathersName = student[8]
-                    };
-                    foreach (var field in student)
-                    {
-                        if (field == "")
+                        Studies studies = new Studies
                         {
-                            System.Console.WriteLine("Empty value found...");
-                            errorList.Add(st);
-                            System.Console.WriteLine("Writing student to log.txt...");
-                            File.WriteAllText("log.txt", st.GetInfo());
-                            goto REPEAT;
-                        }
+                            Name = student[2],
+                            Mode = student[3]
+                        };
+                        Student st = new Student
+                        {
+                            FName = student[0],
+                            LName = student[1],
+                            HisStudies = new Studies(student[2], student[3]),
+                            SNumber = student[4],
+                            Birthdate = student[5],
+                            EmailAddress = student[6],
+                            MothersName = student[7],
+                            FathersName = student[8]
+                        };
+                        if (errHandler.ContainsEmptyField(personCount, student, st)) goto REPEAT;
+                        if (errHandler.ContainRepeatValue(personCount, list, st)) goto REPEAT;
+                        Studies.AddToOrActivateStudies(st.HisStudies);
+                        list.Add(st);
                     }
-                    // if (student[i] == "") // value missing
-                    // {
-                    //     System.Console.WriteLine("Empty value found...");
-                    //     errorList.Add(st = new Student
-                    //     {
-                    //         FName = student[0],
-                    //         LName = student[1],
-                    //         Studies = Studies.StudiesResolver(student[2], student[3]),
-                    //         SNumber = student[4],
-                    //         Birthdate = student[5],
-                    //         EmailAddress = student[6],
-                    //         MothersName = student[7],
-                    //         FathersName = student[8]
-                    //     });
-                        
-                    //     continue;
-                    // }
-                    list.Add(new Student
+                    catch (System.IndexOutOfRangeException ex)
                     {
-                        FName = student[0],
-                        LName = student[1],
-                        Studies = Studies.StudiesResolver(student[2], student[3]),
-                        SNumber = student[4],
-                        Birthdate = student[5],
-                        EmailAddress = student[6],
-                        MothersName = student[7],
-                        FathersName = student[8]
-                    });
-                    // }catch (System.IndexOutOfRangeException ex)
-                    // {
-
-                    // };
-                    REPEAT: continue;
+                        errHandler.WriteErrorToLog(ex, personCount);
+                    };
+                REPEAT: continue;
                 }
             }
+            errHandler.CloseLogWriter();
             return list;
         }
+
+        // private static bool ContainRepeatValue()
+        // {
+        //     using (StreamWriter writer = new StreamWriter(errFilePath, true))
+        //     {
+        //         foreach (var field in student) // do this without loop and goto ?
+        //         {
+        //             if (field == "")
+        //             {
+        //                 System.Console.WriteLine("Empty value found...");
+        //                 System.Console.WriteLine("Writing error info + student info to log.txt...");
+        //                 writer.WriteLine("----------------------------------------------------------------------------");
+        //                 writer.WriteLine("Message : Empty value of argument in person No.: " + personNo + ":\n\t" + st.GetInfo());
+        //                 return true;
+        //             }
+        //         }
+        //         return false;
+        //     }
+        // }
+        // private static bool ContainsEmptyField(int personNo, string errFilePath, string[] student, Student st)
+        // {
+        //     using (StreamWriter writer = new StreamWriter(errFilePath, true))
+        //     {
+        //         foreach (var field in student) // do this without loop and goto ?
+        //         {
+        //             if (field == "")
+        //             {
+        //                 System.Console.WriteLine("Empty value found...");
+        //                 System.Console.WriteLine("Writing error info + student info to log.txt...");
+        //                 writer.WriteLine("----------------------------------------------------------------------------");
+        //                 writer.WriteLine("Message : Empty value of argument in person No.: " + personNo + ":\n\t" + st.GetInfo());
+        //                 return true;
+        //             }
+        //         }
+        //         return false;
+        //     }
+        // }
+        // private static void WriteErrorToLog(Exception ex, int personNo, string errFilePath)
+        // {
+        //     using (StreamWriter writer = new StreamWriter(errFilePath, true))
+        //     {
+        //         while (ex != null)
+        //         {
+        //             System.Console.WriteLine("Missing argument found...");
+        //             System.Console.WriteLine("Writing error info to log.txt...");
+        //             writer.WriteLine("----------------------------------------------------------------------------");
+        //             writer.WriteLine(ex.GetType().FullName);
+        //             writer.WriteLine("Message : " + "Mising argument in person No: " + personNo);
+        //             writer.WriteLine("StackTrace : " + ex.StackTrace);
+        //             ex = ex.InnerException;
+        //         }
+        //     }
+        // }
 
         private static ISerializer SelectSerializer(string format)
         {
@@ -153,8 +179,6 @@ namespace Tut2Proj
             }
             return activeStudiesList;
         }
-        // TODO:
-        // problem with already existing students (log.txt)
 
     }
 }

@@ -1,1 +1,20 @@
-A,B,Informatyka zaoczne,Zaoczne,1123,2000-12-01 00:00:00.000,ab@pjwstk.edu.pl,,D
+----------------------------------------------------------------------------
+Message : Empty value of argument in person No.: 2:
+	A,B,Informatyka zaoczne,Zaoczne,1123,2000-12-01 00:00:00.000,ab@pjwstk.edu.pl,,D
+----------------------------------------------------------------------------
+System.IndexOutOfRangeException
+Message : Mising argument in person No.: 3
+StackTrace :    at Tut2Proj.ExportData.FillListWithStudents(FileInfo inputFile) in /Users/azyl/Git-Uni/APBD-Mac/tutorial2/Tut2Proj/ExportData.cs:line 58
+----------------------------------------------------------------------------
+Message : Repetetive value of identifier argument in person No.: 5:
+	Paweł,Nowak1,Informatyka dzienne,Dzienne,459,2000-02-12 00:00:00.000,nowak@pjwstk.edu.pl,Alina,Adam
+----------------------------------------------------------------------------
+System.IndexOutOfRangeException
+Message : Mising argument in person No.: 6
+StackTrace :    at Tut2Proj.ExportData.FillListWithStudents(FileInfo inputFile) in /Users/azyl/Git-Uni/APBD-Mac/tutorial2/Tut2Proj/ExportData.cs:line 58
+----------------------------------------------------------------------------
+Message : Repetetive value of identifier argument in person No.: 7:
+	Paweł,Nowak1,Informatyka zaoczne,Zaoczne,459,2000-02-12 00:00:00.000,nowak@pjwstk.edu.pl,Alina,Adam
+----------------------------------------------------------------------------
+Message : Empty value of argument in person No.: 8:
+	Miss,Val,Informatyka zaoczne,,123,1998-01-01 00:00:00.000,mval@pjwstk.edu.pl,WW,A
