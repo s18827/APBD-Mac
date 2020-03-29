@@ -15,12 +15,12 @@ namespace Tut4Proj
         {
             // 1. create Local IIS/Kestrel Server on random port
 
-            //2. Our app will be deployed and served through localhost:port
+            // 2. Our app will be deployed and served through localhost:port
 
             CreateHostBuilder(args).Build().Run(); // obejct configured below
         }
 
-        //running our app:
+        // running our app:
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args) // builder configuration 
                 .ConfigureWebHostDefaults(webBuilder =>

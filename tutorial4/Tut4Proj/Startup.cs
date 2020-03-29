@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+
 
 namespace Tut4Proj
 {
@@ -22,8 +21,9 @@ namespace Tut4Proj
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IDbService, MockDbService>(); // if sth will espect interface IDbService
-            services.AddControllers(); // then create instance of MockDbService()
+            services.AddScoped<IStudentsDb, SqlServerDb>(); // HAS TO BE SPECIFIED!
+            //        ^ sth between Transient and Singleton
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
