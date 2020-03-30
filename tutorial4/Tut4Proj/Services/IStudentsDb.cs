@@ -7,9 +7,11 @@ namespace Tut4Proj.Services
     public interface IStudentsDb
     {
          // Always good to use abstraction
-        public IActionResult GetStudents();
+        IEnumerable<Student> GetStudents();
 
-        public IActionResult GetEnrollmentByIndNo(int indexNumber);
+        Enrollment GetEnrollmentByIndNo(string indexNumber);
+
+        bool StudentExists(string idexNumber);
         
         // public IActionResult AddStudent(Student student);
 
