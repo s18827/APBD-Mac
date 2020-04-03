@@ -27,7 +27,7 @@ namespace Tut5proj
         // {
         //     // AddTransient - always new instance returned (not best performance)
         //     // AddSingleton - always one instance returned
-        //     services.AddScoped<IStudentsDb, SqlServerDb>(); // HAS TO BE SPECIFIED!
+        //     services.AddScoped<IStudentsDb, SqlServerDb>(); // for StudentController
         //     //        ^ sth between Transient and Singleton
         //     services.AddControllers();
         // }
@@ -35,7 +35,7 @@ namespace Tut5proj
         // very useful for managing working on different db services
         // just choose different Service which implements Interface (here: IStudentsServiceDb)
         {
-            services.AddScoped<IStudentsServiceDb, SqlServerStudentsDbService>(); // HAS TO BE SPECIFIED!
+            services.AddScoped<IStudentsServiceDb, SqlServerStudentsDbService>(); // for EnrollmentController
             services.AddControllers();
         }
 
