@@ -39,6 +39,7 @@ namespace Tut4Proj.Services
                     st.IdEnrollment = Convert.ToInt32(dr["IdEnrollment"]);
                     listOfStudents.Add(st);
                 }
+                dr.Dispose();
             }
             //con.Dispose(); // important to dispose connection after using them when we don't create connection in the using() block
             return listOfStudents;
@@ -70,6 +71,7 @@ namespace Tut4Proj.Services
                     enr.IdStudy = Convert.ToInt32(dr["IdStudy"]);
                     enr.StartDate = dr["StartDate"].ToString();
                 }
+                dr.Dispose();
             }
             return enr;
         }
@@ -86,6 +88,7 @@ namespace Tut4Proj.Services
                 con.Open();
                 SqlDataReader dr = com.ExecuteReader();
                 if (dr.Read()) return true;
+                dr.Dispose();
             }
             return false;
         }
