@@ -14,7 +14,7 @@ namespace Tut5proj.Controllers
     // insert new student number
 
     // ^ instansaction all if sth did't happen rollback transaction
-    [Route("api/enrollments")]
+    [Route("api/enrollments/")]
     [ApiController] // implicit model validation - validates our Required and all other adnotations
     public class EnrollmentsController : ControllerBase
     {
@@ -57,30 +57,31 @@ namespace Tut5proj.Controllers
 
         // commented for now so that I can test above Post
 
-        // [HttpPost]
-        // public IActionResult PromoteStudents()
-        // {
-        //     // Requested - name of sudies=..., semseter=...
+        [Route("promotions")]
+        [HttpPost]
+        public IActionResult PromoteStudents()
+        {
+            // Requested - name of sudies=..., semseter=...
 
-        //     // chek if studies exist
-        //     // find all studies from studies=.. and semester=...
-        //     // 3. prop,mote all sttudemts to 
-        //     // ^ find enrollment record with sudies=... and semester=...+1 -> IdEnrollment = 10
-        //     // Update all the students
-        //     // If Enrollment does not exist ->add new one
+            // chek if studies exist
+            // find all studies from studies=.. and semester=...
+            // 3. prop,mote all sttudemts to 
+            // ^ find enrollment record with sudies=... and semester=...+1 -> IdEnrollment = 10
+            // Update all the students
+            // If Enrollment does not exist ->add new one
 
-        //     // ^^^ do all that in stored procedure
+            // ^^^ do all that in stored procedure
 
-        //     // - not always procedues are the best bc our bussines logic gets split into vscode program and sql program
-        //     // - no good way of 
-        //     // - hard to switch btw different database languages
-        //     // - we cannot scale database easly using our approach (like when adding second server to handle our growing db - loadbalancer gets mixed up when starting procedures)
-        //     // - hard to use with ORM libraries - we'll use them alter
-        //     // + faster to execute code when its directly on db - should be more prone to InjectionAtacks
-        //     // + using stored procedures we can easly provide accessability to other users for some things only
-        //     // ^applying security rules on users
-        //     return Ok();
-        // }
+            // - not always procedues are the best bc our bussines logic gets split into vscode program and sql program
+            // - no good way of 
+            // - hard to switch btw different database languages
+            // - we cannot scale database easly using our approach (like when adding second server to handle our growing db - loadbalancer gets mixed up when starting procedures)
+            // - hard to use with ORM libraries - we'll use them alter
+            // + faster to execute code when its directly on db - should be more prone to InjectionAtacks
+            // + using stored procedures we can easly provide accessability to other users for some things only
+            // ^applying security rules on users
+            return Ok();
+        }
 
         // move data form endpoint to IStudentsServiceDb -- persistance rule! Solid - S!
     }
