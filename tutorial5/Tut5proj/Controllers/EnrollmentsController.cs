@@ -25,7 +25,8 @@ namespace Tut5proj.Controllers
         {
             _service = service;
         }
-        [HttpPost]
+        [HttpPost] //, Name = "EnrollStudent"
+        [ActionName("EnrollStudent")]
         public IActionResult EnrollStudent(EnrollStudentRequest request)
         {
             // if (!ModelState.IsValid) // from ControllerBase, checks all components from Request 
@@ -46,13 +47,12 @@ namespace Tut5proj.Controllers
                 "Semester": 1,
                 "LastName": "Kowalski"
             }*/
-            var actionName = "Student has been enrolled succesfully.";
             var response = _service.EnrollStudent(request);
-            if (response == null)
+            if (response == null) // find better way (doesnt work for multiple POSTS (just returns response null))
             {
-                return BadRequest("Requested studies not found or student with this IndexNumber already exists"); // split error msg?
-            }
-            return CreatedAtAction(actionName, response);
+                return BadRequest("Requested studies not found or student with this IndexNumber already exists");
+            } // split error msg?
+            return CreatedAtAction("EnrollStudent", response);
         }
 
         // commented for now so that I can test above Post
