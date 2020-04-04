@@ -22,6 +22,7 @@ namespace Tut5proj.DTOs.Requests
         public string BirthDate { get; set; }
 
         [Required]
+        [MaxLength(100)]
         public string Studies { get; set; }
 
     }

@@ -1,3 +1,4 @@
+using System.Data;
 using System;
 using System.Data.SqlClient;
 using Tut5proj.Models;
@@ -153,9 +154,44 @@ namespace Tut5proj.Services
         }
 
 
-        public void PromoteStudets(int semester, string studies)
+        public PromoteStudentsResponse PromoteStudets(PromoteStudentsRequest request)
         {
-            throw new System.NotImplementedException();
+            PromoteStudentsResponse response = null;
+            Enrollment respEnrollment = new Enrollment();
+
+            using (SqlConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+
+                // 1.  create a command object identifying the stored procedure
+                SqlCommand cmd = new SqlCommand("PromoteStudents", conn);
+
+                // 2. set the command object so it knows to execute a stored procedure
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // 3. add parameter to command, which will be passed to the stored procedure
+                cmd.Parameters.Add(new SqlParameter("@StudyName", request.StudyName));
+                cmd.Parameters.Add(new SqlParameter("@Semester", request.Semester));
+
+                // execute the command
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (!dr.Read())
+                    {
+                        cmd.Dispose();
+                        return response; // returns null
+                    }
+                    response = new PromoteStudentsResponse();
+                    response.Enrollment = respEnrollment;
+                    respEnrollment.IdEnrollment = (int)dr["IdEnrollment"];
+                    respEnrollment.Semester = (int)dr["Semester"];
+                    respEnrollment.IdStudy = (int)dr["IdStudy"];
+                    respEnrollment.StartDate = dr["StartDate"].ToString();
+                }
+                cmd.Dispose();
+            }
+            return response;
         }
+
     }
 }

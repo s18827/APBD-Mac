@@ -8,6 +8,6 @@ namespace Tut5proj.Services
         // better to pass separeate bussiness model instead of request
          EnrollStudentResponse EnrollStudent(EnrollStudentRequest request);
 
-         void PromoteStudets(int semester, string studies);
+         PromoteStudentsResponse PromoteStudets(PromoteStudentsRequest request);
     }
 }

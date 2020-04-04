@@ -48,7 +48,7 @@ namespace Tut5proj.Controllers
                 "LastName": "Kowalski"
             }*/
             var response = _service.EnrollStudent(request);
-            if (response == null) // find better way (doesnt work for multiple POSTS (just returns response null))
+            if (response == null) // find better way
             {
                 return BadRequest("Requested studies not found or student with this IndexNumber already exists");
             } // split error msg?
@@ -59,13 +59,14 @@ namespace Tut5proj.Controllers
 
         [Route("promotions")]
         [HttpPost]
-        public IActionResult PromoteStudents()
+        [ActionName("PromoteStudents")]
+        public IActionResult PromoteStudents(PromoteStudentsRequest request)
         {
-            // Requested - name of sudies=..., semseter=...
+            // Requested - name of sudies=..., semeseter=...
 
             // chek if studies exist
             // find all studies from studies=.. and semester=...
-            // 3. prop,mote all sttudemts to 
+            // 3. promote all sttudemts to 
             // ^ find enrollment record with sudies=... and semester=...+1 -> IdEnrollment = 10
             // Update all the students
             // If Enrollment does not exist ->add new one
@@ -80,7 +81,12 @@ namespace Tut5proj.Controllers
             // + faster to execute code when its directly on db - should be more prone to InjectionAtacks
             // + using stored procedures we can easly provide accessability to other users for some things only
             // ^applying security rules on users
-            return Ok();
+            var response = _service.PromoteStudets(request);
+            if (response == null) // find better way
+            {
+                return BadRequest("Enrollment not returned by stored procedure");
+            }
+            return CreatedAtAction("PromoteStudents", response);
         }
 
         // move data form endpoint to IStudentsServiceDb -- persistance rule! Solid - S!
