@@ -56,7 +56,7 @@ namespace Tut4Proj.Services
                 com.CommandText = "select e.IdEnrollment, e.semester, e.idstudy, e.startdate from enrollment e, student st where st.IndexNumber = @index and st.IdEnrollment = e.IdEnrollment";
                 // 1 way of dealing
                 // com.Parameters.AddWithValue("index", indexNumber);
-                // ^ treat any pass to our URL as text (no possibility to do drop table or other action in URL - INJECTION ATTACK prone)
+                // ^ treat any pass to our URL as text (no possibility to do drop table or other action in URL - INJECTION ATTACK resistance)
                 // 2 way of dealing
                 SqlParameter par1 = new SqlParameter();
                 par1.ParameterName = "index";
