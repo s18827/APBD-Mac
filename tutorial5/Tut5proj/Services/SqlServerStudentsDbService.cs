@@ -84,7 +84,7 @@ namespace Tut5proj.Services
                     dr.Close();
 
                     // statement4 - inserting new Enrollment
-                    com.CommandText = "INSERT INTO Enrollment (IdEnrollment, Semester, IdStudy, StartDate) VALUES (@NewIdEnrollment, 1, @IdStudy, convert(varchar, getdate(), 104))";
+                    com.CommandText = "INSERT INTO Enrollment (IdEnrollment, Semester, IdStudy, StartDate) VALUES (@NewIdEnrollment, 1, @IdStudy, convert(varchar, getdate(), 110))";
                     // com.Parameters.AddWithValue("IdStudy", idStudy);
                     com.Parameters.AddWithValue("NewIdEnrollment", newIdEnrollment);
                     com.Transaction = tran;
@@ -136,7 +136,8 @@ namespace Tut5proj.Services
                 com.CommandText = "SELECT * FROM Enrollment WHERE IdEnrollment = @IdEnrollment";
                 com.Transaction = tran;
                 dr = com.ExecuteReader();
-                // no exception handling bc it has to exist - we made sure about that earlier
+                dr.Read(); // no exception handling needed bc it has to exist - we made sure about that earlier
+
                 response = new EnrollStudentResponse();
                 response.Semester = 1; // JUST THAT?
                 response.Enrollment = respEnrollment;
@@ -170,7 +171,7 @@ namespace Tut5proj.Services
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 // 3. add parameter to command, which will be passed to the stored procedure
-                cmd.Parameters.Add(new SqlParameter("@StudyName", request.StudyName));
+                cmd.Parameters.Add(new SqlParameter("@StudyName", request.Studies));
                 cmd.Parameters.Add(new SqlParameter("@Semester", request.Semester));
 
                 // execute the command
@@ -193,5 +194,52 @@ namespace Tut5proj.Services
             return response;
         }
 
+        // public PromoteStudentsResponse PromoteStudets(PromoteStudentsRequest request)
+        // {
+        //     PromoteStudentsResponse response = null;
+        //     Enrollment respEnrollment = new Enrollment();
+
+        //     using (SqlConnection conn = new SqlConnection(ConnString))
+        //     using (var cmd = new SqlCommand())
+        //     {
+        //         {
+        //             cmd.CommandText = "EXECUTE PromoteStudents @StudyName, @Semester";
+        //             cmd.Parameters.AddWithValue("StudyName", request.Studies);
+        //             cmd.Parameters.AddWithValue("Semester", request.Semester);
+        //             cmd.Parameters.AddWithValue("IdEnrollmentOut",respEnrollment.IdEnrollment);
+        //             cmd.Parameters.AddWithValue("SemesterOut", respEnrollment.Semester);
+        //             cmd.Parameters.AddWithValue("IdStudyOut", respEnrollment.IdStudy);
+        //             cmd.Parameters.AddWithValue("StartDateOut", respEnrollment.StartDate);
+        //             conn.Open();
+        //             cmd.Connection = conn;
+        //             // 1.  create a command object identifying the stored procedure
+        //             // SqlCommand cmd = new SqlCommand("PromoteStudents", conn);
+
+        //             // 2. set the command object so it knows to execute a stored procedure
+        //             cmd.CommandType = CommandType.StoredProcedure;
+
+        //             // 3. add parameter to command, which will be passed to the stored procedure
+
+
+        //             // execute the command
+        //             using (SqlDataReader dr = cmd.ExecuteReader())
+        //             {
+
+        //                 if (!dr.Read())
+        //                 {
+        //                     cmd.Dispose();
+        //                     return response; // returns null
+        //                 }
+        //                 response = new PromoteStudentsResponse();
+        //                 response.Enrollment = respEnrollment;
+        //                 respEnrollment.IdEnrollment = (int)dr["IdEnrollment"];
+        //                 respEnrollment.Semester = (int)dr["Semester"];
+        //                 respEnrollment.IdStudy = (int)dr["IdStudy"];
+        //                 respEnrollment.StartDate = dr["StartDate"].ToString();
+        //             }
+        //             cmd.Dispose();
+        //         }
+        //         return response;
+        //     }
+        }
     }
-}

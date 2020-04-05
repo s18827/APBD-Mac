@@ -78,15 +78,22 @@ namespace Tut5proj.Controllers
             // - hard to switch btw different database languages
             // - we cannot scale database easly using our approach (like when adding second server to handle our growing db - loadbalancer gets mixed up when starting procedures)
             // - hard to use with ORM libraries - we'll use them alter
-            // + faster to execute code when its directly on db - should be more prone to InjectionAtacks
+            // + faster to execute code when its directly on db - should be more prone to InjectionAttacks
             // + using stored procedures we can easly provide accessability to other users for some things only
             // ^applying security rules on users
-            var response = _service.PromoteStudets(request);
-            if (response == null) // find better way
+            try
             {
-                return BadRequest("Enrollment not returned by stored procedure");
+                var response = _service.PromoteStudets(request);
+                if (response == null) // find better way
+                {
+                    return BadRequest("Enrollment not returned by stored procedure");
+                }
+                return CreatedAtAction("PromoteStudents", response);
             }
-            return CreatedAtAction("PromoteStudents", response);
+            catch (SqlException)
+            {
+                return NotFound("Studies with given name not found");
+            }
         }
 
         // move data form endpoint to IStudentsServiceDb -- persistance rule! Solid - S!
