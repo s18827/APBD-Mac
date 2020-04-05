@@ -49,7 +49,7 @@ namespace Tut5proj.Services
                     dr.Close();
                     tran.Rollback();
                     dr.Dispose();
-                    return response; // null
+                    throw new ArgumentException("Studies not found");
                 }
                 int idStudy = (int)dr["IdStudy"]; // needed for 3.
                 dr.Close();
@@ -105,7 +105,7 @@ namespace Tut5proj.Services
                     dr.Close();
                     tran.Rollback();
                     dr.Dispose();
-                    return response; // null
+                    throw new InvalidOperationException("Student with given index number already exists");
                 }
                 dr.Close();
 
@@ -147,8 +147,7 @@ namespace Tut5proj.Services
                 respEnrollment.StartDate = dr["StartDate"].ToString();
                 #endregion
 
-                dr.Close();
-                dr.Dispose();
+                dr.Dispose(); // dispose == close ?
                 tran.Commit();
             }
             return response;
@@ -157,6 +156,10 @@ namespace Tut5proj.Services
 
         public PromoteStudentsResponse PromoteStudets(PromoteStudentsRequest request)
         {
+            if (request.Studies == null || request.Semester == 0)
+            {
+                throw new ArgumentNullException("Incorrect request");
+            }
             PromoteStudentsResponse response = null;
             Enrollment respEnrollment = new Enrollment();
 
@@ -180,7 +183,7 @@ namespace Tut5proj.Services
                     if (!dr.Read())
                     {
                         cmd.Dispose();
-                        return response; // returns null
+                        throw new ArgumentException("Nothing to be read by SqlDataReader");
                     }
                     response = new PromoteStudentsResponse();
                     response.Enrollment = respEnrollment;
@@ -193,53 +196,5 @@ namespace Tut5proj.Services
             }
             return response;
         }
-
-        // public PromoteStudentsResponse PromoteStudets(PromoteStudentsRequest request)
-        // {
-        //     PromoteStudentsResponse response = null;
-        //     Enrollment respEnrollment = new Enrollment();
-
-        //     using (SqlConnection conn = new SqlConnection(ConnString))
-        //     using (var cmd = new SqlCommand())
-        //     {
-        //         {
-        //             cmd.CommandText = "EXECUTE PromoteStudents @StudyName, @Semester";
-        //             cmd.Parameters.AddWithValue("StudyName", request.Studies);
-        //             cmd.Parameters.AddWithValue("Semester", request.Semester);
-        //             cmd.Parameters.AddWithValue("IdEnrollmentOut",respEnrollment.IdEnrollment);
-        //             cmd.Parameters.AddWithValue("SemesterOut", respEnrollment.Semester);
-        //             cmd.Parameters.AddWithValue("IdStudyOut", respEnrollment.IdStudy);
-        //             cmd.Parameters.AddWithValue("StartDateOut", respEnrollment.StartDate);
-        //             conn.Open();
-        //             cmd.Connection = conn;
-        //             // 1.  create a command object identifying the stored procedure
-        //             // SqlCommand cmd = new SqlCommand("PromoteStudents", conn);
-
-        //             // 2. set the command object so it knows to execute a stored procedure
-        //             cmd.CommandType = CommandType.StoredProcedure;
-
-        //             // 3. add parameter to command, which will be passed to the stored procedure
-
-
-        //             // execute the command
-        //             using (SqlDataReader dr = cmd.ExecuteReader())
-        //             {
-
-        //                 if (!dr.Read())
-        //                 {
-        //                     cmd.Dispose();
-        //                     return response; // returns null
-        //                 }
-        //                 response = new PromoteStudentsResponse();
-        //                 response.Enrollment = respEnrollment;
-        //                 respEnrollment.IdEnrollment = (int)dr["IdEnrollment"];
-        //                 respEnrollment.Semester = (int)dr["Semester"];
-        //                 respEnrollment.IdStudy = (int)dr["IdStudy"];
-        //                 respEnrollment.StartDate = dr["StartDate"].ToString();
-        //             }
-        //             cmd.Dispose();
-        //         }
-        //         return response;
-        //     }
-        }
     }
+}
