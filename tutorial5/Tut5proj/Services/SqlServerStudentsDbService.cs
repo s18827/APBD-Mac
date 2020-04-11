@@ -152,7 +152,7 @@ namespace Tut5proj.Services
         }
 
 
-        public PromoteStudentsResponse PromoteStudets(PromoteStudentsRequest request)
+        public PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request)
         {
             if (request.Studies == null || request.Semester == 0)
             {

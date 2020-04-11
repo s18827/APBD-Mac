@@ -47,7 +47,7 @@ namespace Tut5proj.Controllers
         {
             try
             {
-                var response = _service.PromoteStudets(request);
+                var response = _service.PromoteStudents(request);
                 return CreatedAtAction("PromoteStudents", response);
             }
             catch (ArgumentNullException)
