@@ -27,7 +27,7 @@ namespace Tut6Proj
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IDbService, SqlServerDbService>(); // remember to invoke
+            services.AddScoped<IDbService, SqlServerDbService>(); // remember to invoke
             services.AddControllers();
         }
 
@@ -39,27 +39,25 @@ namespace Tut6Proj
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<LoggingMiddleware>();
+            // app.UseMiddleware<LoggingMiddleware>(); //TODO: Task 2
 
-            app.Use(async (context, next) =>
+            app.Use(async (context, next) => // TODO: Task 1
             {
-                if (!context.Request.Headers.ContainsKey("Index"))
+                 // check if request contains index number
+                if (!context.Request.Headers.ContainsKey("IndexNumber")) // ?
                 {
-                    context.Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync("The index was not porvided in teh header"); // 401 + message
-                    return;
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsync("The index was not provided in the header");
+                    return; // 401 + message
                 }
-                else
+                // check if student exists
+                string index = context.Request.Headers["IndexNumber"].ToString(); // ?
+                var st = dbService.GetStudentByIndex(index);
+                if (st == null)
                 {
-                    // check if student is in db
-                    string index = context.Request.Headers["Index"].ToString();
-
-                    //...
-                    // new SqlConnection()
-                    // dbService.CheckIdex - to make in Services
-                    // select * from students where IndexNumber = @Index;
-                    //401 context.Response.WriteAssync("Invalid student index")..
-                    //return;
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    await context.Response.WriteAsync("Student not found in the database - Incorrect index number");
+                    return;
                 }
                 await next(); // if everyting is ok (student is in Db) -> call next middleware (works like linked-list)
             });
