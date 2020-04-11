@@ -39,19 +39,19 @@ namespace Tut6Proj
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseMiddleware<LoggingMiddleware>(); //TODO: Task 2
+            app.UseMiddleware<LoggingMiddleware>(); // Task 2
 
-            app.Use(async (context, next) => // TODO: Task 1
+            app.Use(async (context, next) => // Task 1
             {
                  // check if request contains index number
-                if (!context.Request.Headers.ContainsKey("IndexNumber")) // ?
+                if (!context.Request.Headers.ContainsKey("IndexNumber"))
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     await context.Response.WriteAsync("The index was not provided in the header");
                     return; // 401 + message
                 }
                 // check if student exists
-                string index = context.Request.Headers["IndexNumber"].ToString(); // ?
+                string index = context.Request.Headers["IndexNumber"].ToString();
                 var st = dbService.GetStudentByIndex(index);
                 if (st == null)
                 {
@@ -59,8 +59,32 @@ namespace Tut6Proj
                     await context.Response.WriteAsync("Student not found in the database - Incorrect index number");
                     return;
                 }
-                await next(); // if everyting is ok (student is in Db) -> call next middleware (works like linked-list)
+                await next(); // if everyting is ok -> call next middleware (works like linked-list)
             });
+
+            // // Task Additional
+
+            // // conditional middleware (authorisation activtes when some condition is met like here: "secret" in path)
+            // app.UseWhen(context  => context.Request.Path.ToString().Contains("secret"), app => app.Use (async (context, next) =>
+            // {
+            //     if (!context.Request.Headers.ContainsKey("IndexNumber"))
+            //     {
+            //         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //         await context.Response.WriteAsync("The index was not provided in the header");
+            //         return; // 401 + message
+            //     }
+
+            //     string index = context.Request.Headers["IndexNumber"].ToString();
+            //     var st = dbService.GetStudentByIndex(index);
+            //     if (st == null)
+            //     {
+            //         context.Response.StatusCode = StatusCodes.Status404NotFound;
+            //         await context.Response.WriteAsync("Student not found in the database - Incorrect index number");
+            //         return;
+            //     }
+            //     await next();
+            //     // in this case as "secret" appears in the path we should handle it somehow or else we cannot properly use our requests
+            // }));
 
             app.UseRouting();
 

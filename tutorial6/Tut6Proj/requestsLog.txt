@@ -1,0 +1,36 @@
+--------------------------------
+		Log Entry:
+14:21:20
+Saturday, 11 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+14:21:24
+Saturday, 11 April 2020
+/api/students
+GET
+
+{
+    "IndexNumber": "s12345",
+    "FirstName": "John",
+    "LastName": "Doe",
+    "BirthDate": "30.03.1993",
+    "Studies": "Informatyka dzien"
+}
+--------------------------------
+		Log Entry:
+14:21:43
+Saturday, 11 April 2020
+/api/students
+GET
+
+{
+    "IndexNumber": "s12345",
+    "FirstName": "John",
+    "LastName": "Doe",
+    "BirthDate": "30.03.1993",
+    "Studies": "Informatyka dzien"
+}

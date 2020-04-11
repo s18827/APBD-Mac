@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using Tut6Proj.DTOs.Requests;
 using Tut6Proj.DTOs.Responses;
 using Tut6Proj.Models;
@@ -13,7 +14,7 @@ namespace Tut6Proj.Services
         private string ConnString = "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin";
 
         #region StudentsController
-        
+
         public IEnumerable<Student> GetStudents()
         {
             var listOfStudents = new List<Student>();
@@ -25,7 +26,7 @@ namespace Tut6Proj.Services
                 com.CommandText = "SELECT * FROM Student";
 
                 con.Open();
-                SqlDataReader dr = com.ExecuteReader(); 
+                SqlDataReader dr = com.ExecuteReader();
                 while (dr.Read())
                 {
                     var st = new Student();
@@ -97,7 +98,7 @@ namespace Tut6Proj.Services
         #endregion
 
         #region EnrollmentsController
-    
+
         public EnrollStudentResponse EnrollStudent(EnrollStudentRequest request)
         {
             EnrollStudentResponse response = null;
@@ -268,5 +269,24 @@ namespace Tut6Proj.Services
         }
 
         #endregion
+
+
+        public void SaveLogData(IEnumerable<string> logData)
+        {
+            string logFilePath = "/Users/azyl/Git-Uni/APBD-Mac/tutorial6/Tut6Proj/requestsLog.txt";
+            try
+            {
+                using (StreamWriter writer = File.AppendText(logFilePath))
+                {
+                    foreach (string data in logData)
+                    {
+                        writer.WriteLine(data);
+                    }
+                }
+            }
+            catch (Exception) { }
+        }
+
     }
+
 }

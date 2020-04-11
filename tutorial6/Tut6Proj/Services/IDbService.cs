@@ -18,5 +18,9 @@ namespace Tut6Proj.Services
         EnrollStudentResponse EnrollStudent(EnrollStudentRequest request);
 
         PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request);
+
+        // ----------------------------------
+
+        void SaveLogData(IEnumerable<string> data);
     }
 }
