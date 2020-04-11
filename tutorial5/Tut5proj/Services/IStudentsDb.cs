@@ -4,7 +4,7 @@ using Tut5proj.Models;
 
 namespace Tut5proj.Services
 {
-    public interface IStudentsDb
+    public interface IStudentsDb // used for StudentsController
     {
          // Always good to use abstraction
         IEnumerable<Student> GetStudents();
@@ -13,12 +13,5 @@ namespace Tut5proj.Services
 
         bool StudentExists(string idexNumber);
         
-        // public IActionResult AddStudent(Student student);
-
-        // public IActionResult EditStudentById(int id, string newFname, string newLname, string newIndexNum);
-
-        // public IActionResult RemoveStudentById(int id);
-
-        // public bool IdExists(int id);
     }
 }

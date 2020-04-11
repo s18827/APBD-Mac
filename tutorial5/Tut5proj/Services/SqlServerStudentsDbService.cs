@@ -30,8 +30,6 @@ namespace Tut5proj.Services
             using (var con = new SqlConnection(ConnString))
             using (var com = new SqlCommand())
             {
-                // try
-                // {
                 #region 2.
                 // statement1
                 com.CommandText = "SELECT * FROM Studies WHERE Name = @StudyName";

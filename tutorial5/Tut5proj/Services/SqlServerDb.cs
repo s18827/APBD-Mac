@@ -6,7 +6,7 @@ using Tut5proj.Models;
 
 namespace Tut5proj.Services
 {
-    public class SqlServerDb : IStudentsDb
+    public class SqlServerDb : IStudentsDb // for StudentsController
     {
         // we could have some repository or sth patterns to reuse our code
         // Repository pattern
