@@ -1,0 +1,15 @@
+ALTER PROCEDURE GetTeamMemberInfo @idTeamMember INT
+AS
+BEGIN
+    SET XACT_ABORT ON;
+    BEGIN TRAN
+
+        DECLARE @teamMemberExists INT = (SELECT 1 FROM TeamMember WHERE IdTeamMember = @idTeamMember)
+        IF @teamMemberExists IS NULL
+            BEGIN
+                RAISERROR ('Team Member with this id is not yet in the database', 16, 2);
+            END
+
+        SELECT * FROM TeamMember WHERE IdTeamMember = @idTeamMember;
+    COMMIT
+END

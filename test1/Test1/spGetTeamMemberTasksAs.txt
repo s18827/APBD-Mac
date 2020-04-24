@@ -1,0 +1,15 @@
+ALTER PROCEDURE GetTeamMemberTasksAs @idTeamMember INT
+AS
+BEGIN
+    SET XACT_ABORT ON;
+    BEGIN TRAN
+
+        DECLARE @teamMemberExists INT = (SELECT 1 FROM TeamMember WHERE IdTeamMember = @idTeamMember)
+        IF @teamMemberExists IS NULL
+            BEGIN
+                RAISERROR ('Team Member with this id is not yet in the database', 16, 2);
+            END
+
+        SELECT t.Name, t.Description, t.Deadline, p.Name AS ProjectName, tt.Name AS TypeName FROM Task t, TeamMember tm, Project p, TaskType tt WHERE tm.IdTeamMember = @idTeamMember AND t.IdAssignedTo = @idTeamMember AND t.IdProject = p.IdProject AND tt.IdTaskType = t.IdTaskType;
+    COMMIT
+END

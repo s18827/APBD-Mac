@@ -1,0 +1,17 @@
+ALTER PROCEDURE DeleteProject @idProject INT
+AS
+BEGIN
+    SET XACT_ABORT ON;
+    BEGIN TRAN
+
+        DECLARE @projectExists INT = (SELECT 1 FROM Project WHERE IdProject = @idProject)
+        IF @projectExists IS NULL
+            BEGIN
+                RAISERROR ('Project with this id is not yet in the database', 16, 2);
+            END
+
+        DELETE FROM Task WHERE IdProject = @idProject;
+        DELETE FROM Project WHERE IdProject = @idProject;
+
+    COMMIT
+END
