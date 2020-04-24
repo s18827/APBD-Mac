@@ -105,7 +105,6 @@ namespace Test1.Services
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@idProject", idProject));
-                    cmd.ExecuteNonQuery();
 
                     deleteInfo = "deleted " + cmd.ExecuteNonQuery() + " rows";
                 }

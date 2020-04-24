@@ -49,7 +49,7 @@ namespace Test1.Controllers
             // }
         }
 
-        [HttpDelete("{idProject}")] // throws error but works, I didn't have time to correct that :(
+        [HttpDelete("removeProject/{idProject}")] // throws error but works, I didn't have time to correct that :()
         public IActionResult RemoveProject(int idProject)
         {
             try{

@@ -9,9 +9,11 @@ BEGIN
             BEGIN
                 RAISERROR ('Project with this id is not yet in the database', 16, 2);
             END
-
-        DELETE FROM Task WHERE IdProject = @idProject;
-        DELETE FROM Project WHERE IdProject = @idProject;
+        ELSE
+            BEGIN
+                DELETE FROM Task WHERE IdProject = @idProject;
+                DELETE FROM Project WHERE IdProject = @idProject;
+            END
 
     COMMIT
 END
