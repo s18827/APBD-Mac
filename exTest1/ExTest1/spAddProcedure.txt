@@ -1,0 +1,25 @@
+ALTER PROCEDURE AddProcedure @idProcedure INT, @name VARCHAR(100), @desc VARCHAR(100), @idAnimal INT
+AS
+BEGIN
+    SET XACT_ABORT ON;
+    BEGIN TRAN
+
+        DECLARE @procedureExists INT = (SELECT 1 FROM "Procedure" WHERE IdProcedure = @idProcedure)
+        IF @procedureExists IS NULL
+            BEGIN
+--                 RAISERROR ('Procedure with this Id is not yet in the database', 16, 2);
+                SET IDENTITY_INSERT "Procedure" ON;
+                    INSERT INTO "Procedure" (IdProcedure, Name, Description) VALUES (@idProcedure, @name, @desc);
+                SET IDENTITY_INSERT "Procedure" OFF;
+            END
+
+        DECLARE @animalExists INT = (SELECT 1 FROM Animal WHERE IdAnimal = @idAnimal)
+        IF @animalExists IS NULL
+            BEGIN
+                RAISERROR ('Animal with this Id is not yet in the database', 16, 2);
+            END
+
+        INSERT INTO Procedure_Animal (Procedure_IdProcedure, Animal_IdAnimal, Date) VALUES (@idProcedure, @idAnimal, getdate());
+
+    COMMIT
+END

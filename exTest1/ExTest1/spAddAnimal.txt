@@ -1,0 +1,24 @@
+ALTER PROCEDURE AddAnimal @idAnimal INT, @name VARCHAR(100), @type VARCHAR(100), @admissionDate DATE, @idOwner INT
+AS
+BEGIN
+    SET XACT_ABORT ON; -- protects us from cases when our transaction is not rolled back (like in case of timeout)
+    BEGIN TRAN
+
+        DECLARE @ownerExists INT = (SELECT 1 FROM Owner WHERE IdOwner = @idOwner)
+        IF @ownerExists IS NULL
+            BEGIN
+                RAISERROR ('Owner with this Id is not yet in the database', 16, 2);
+            END
+
+        DECLARE @animalExists INT = (SELECT 1 FROM Animal WHERE IdAnimal = @idAnimal)
+        IF @animalExists IS NOT NULL
+            BEGIN
+                RAISERROR ('Animal with given Id already exists in the database', 16, 2);
+            END
+
+        SET IDENTITY_INSERT Animal ON
+        INSERT INTO Animal (IdAnimal, Name, Type, AdmissionDate, IdOwner) VALUES (@idAnimal, @name, @type, @admissionDate, @idOwner);
+        SET IDENTITY_INSERT Animal OFF
+
+    COMMIT
+END

@@ -1,0 +1,26 @@
+ALTER PROCEDURE GetAnimals @sortBy VARCHAR(100)
+AS
+BEGIN
+    SET XACT_ABORT ON; -- protects us from cases when our transaction is not rolled back (like in case of timeout)
+    BEGIN TRAN
+
+--     IF @sortBy != '' -- if @sorBy not specified it should work fine -> go to ELSE in CASES below
+--     BEGIN
+        DECLARE @sortByCheck INT = (SELECT ORDINAL_POSITION FROM information_schema.columns WHERE TABLE_NAME = 'Animal' AND COLUMN_NAME = @sortBy);
+        IF @sortByCheck IS NULL AND @sortBy != 'LastName'
+        BEGIN
+            RAISERROR ('sortBy value does not match any column in the database', 16, 2);
+        END
+--     END
+
+    SELECT Name, Type, AdmissionDate, o.LastName FROM Animal, Owner o WHERE Animal.IdOwner = o.IdOwner ORDER BY
+        CASE WHEN @sortBy='Name' THEN Name
+            WHEN @sortBy='Type' THEN Type
+            WHEN @sortBy='AdmissionDate' THEN convert(varchar, AdmissionDate, 110)
+            WHEN @sortBy='LastName' THEN LastName
+--             ELSE  convert(varchar, AdmissionDate, 110)
+            -- ELSE added so that we can use ths stored procedure for endpoint in which we don't specify @orderBy
+        END
+
+    COMMIT
+END

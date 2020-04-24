@@ -1,0 +1,67 @@
+-- convert(varchar, getdate(), 110)
+-- convert(datetime, @BirthDate, 104)
+
+SET IDENTITY_INSERT Owner ON;
+INSERT INTO Owner (IdOwner, FirstName, LastName) VALUES (1, 'Aleks', 'Zaluski');
+INSERT INTO Owner (IdOwner, FirstName, LastName) VALUES (2, 'Bob', 'Ross');
+INSERT INTO Owner (IdOwner, FirstName, LastName) VALUES (3, 'Marry', 'Bloody');
+SET IDENTITY_INSERT Owner OFF;
+
+SELECT * FROM Owner;
+
+-----------------------------------
+SET IDENTITY_INSERT Animal ON
+INSERT INTO Animal(IdAnimal, Name, Type, AdmissionDate, IdOwner) VALUES (1, 'Rumcajs', 'Cat Ocicat', '02-22-2020', 1);
+INSERT INTO Animal(IdAnimal, Name, Type, AdmissionDate, IdOwner) VALUES (2, 'Patataj', 'Horse', '03-08-2019', 2);
+INSERT INTO Animal(IdAnimal, Name, Type, AdmissionDate, IdOwner) VALUES (3, 'Bruno', 'Dog Rottweiler', '01-01-2020', 2);
+INSERT INTO Animal(IdAnimal, Name, Type, AdmissionDate, IdOwner) VALUES (4, 'Pumpkin', 'Cat Bombay', '12-24-2019', 3);
+SET IDENTITY_INSERT Animal OFF;
+
+SELECT * FROM Animal;
+DELETE FROM Animal WHERE IdAnimal = 1 OR IdAnimal = 2 OR IdAnimal = 3 OR IdAnimal = 4;
+
+-----------------------------------
+SET IDENTITY_INSERT "Procedure" ON;
+INSERT INTO "Procedure" (IdProcedure, Name, Description) VALUES (1, 'Insect removal', 'A tick has been removed.');
+INSERT INTO "Procedure" (IdProcedure, Name, Description) VALUES (2, 'Vaccination', 'An animal has been vaccinated.');
+INSERT INTO "Procedure" (IdProcedure, Name, Description) VALUES (3, 'Obligatory health check', 'Health of the animal has been checked.');
+SET IDENTITY_INSERT "Procedure" OFF;
+
+SELECT * FROM "Procedure";
+-----------------------------------
+INSERT INTO Procedure_Animal (Procedure_IdProcedure, Animal_IdAnimal, Date) VALUES (1, 1, '02-22-2020');
+INSERT INTO Procedure_Animal (Procedure_IdProcedure, Animal_IdAnimal, Date) VALUES (2, 1, '02-22-2020');
+INSERT INTO Procedure_Animal (Procedure_IdProcedure, Animal_IdAnimal, Date) VALUES (3, 2, '03-12-2019');
+INSERT INTO Procedure_Animal (Procedure_IdProcedure, Animal_IdAnimal, Date) VALUES (2, 3, '01-01-2020');
+INSERT INTO Procedure_Animal (Procedure_IdProcedure, Animal_IdAnimal, Date) VALUES (3, 4, '12-26-2020');
+
+SELECT * From Procedure_Animal;
+
+
+--------------- TESTING GROUND: ---------------
+
+SELECT * FROM information_schema.columns WHERE TABLE_NAME = 'Animal' AND COLUMN_NAME = 'Type';
+SELECT a.Name, a.Type, a.AdmissionDate, o.LastName FROM Animal a, Owner o WHERE a.IdOwner = o.IdOwner ORDER BY a.AdmissionDate DESC;
+
+DECLARE  @sortBy VARCHAR(100) = 'LastName';
+SELECT * FROM information_schema.columns WHERE (TABLE_NAME = 'Animal' OR TABLE_NAME = 'Owner') AND COLUMN_NAME = @sortBy;
+DECLARE @sortByCheck INT = (SELECT 1 FROM information_schema.columns WHERE TABLE_NAME = 'Animal' OR TABLE_NAME = 'Owner' AND COLUMN_NAME = @sortBy);
+-- select @sortByCheck;
+IF @sortByCheck IS NULL
+BEGIN
+    RAISERROR ('sortBy value does not match any column in the database', 16, 2);
+    --SELECT a.Name, a.Type, a.AdmissionDate, o.LastName FROM Animal a, Owner o WHERE a.IdOwner = o.IdOwner ORDER BY a.AdmissionDate DESC;                RAISERROR ('sortBy value does not match any column in the database', 16, 2);
+END
+
+go
+
+GetAnimals'LastName' ;
+
+SELECT * FROM Animal;
+DELETE FROM Animal WHERE IdAnimal=666;
+
+SELECT * FROM  "Procedure";
+DELETE FROM "Procedure" WHERE IdProcedure = 7;
+
+SELECT * FROM Procedure_Animal;
+DELETE FROM Procedure_Animal WHERE Animal_IdAnimal = 666;
