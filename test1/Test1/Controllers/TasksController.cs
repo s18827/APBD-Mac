@@ -7,7 +7,7 @@ using Test1.Services;
 
 namespace Test1.Controllers
 {
-    [Route("api/tasks")]
+    [Route("api/tasks/")]
     [ApiController]
     public class TasksController : ControllerBase
     {
@@ -49,7 +49,7 @@ namespace Test1.Controllers
             // }
         }
 
-        [HttpDelete("/deleteProject/{idProject}")]
+        [HttpDelete("{idProject}")] // throws error but works, I didn't have time to correct that :(
         public IActionResult RemoveProject(int idProject)
         {
             try{
