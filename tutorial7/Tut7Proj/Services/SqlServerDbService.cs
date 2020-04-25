@@ -6,14 +6,130 @@ using Tut7Proj.Models;
 using Tut7Proj.DTOs.Requests;
 using Tut7Proj.DTOs.Responses;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Tut7Proj.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+
 
 namespace Tut7Proj.Services
 {
-    public class SqlServeDbService : IDbService
+    public class SqlServerDbService : IDbService
     {
 
         private string ConnString = "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin";
 
+        #region DataSaving
+        public void SaveLoginDataToFile(LoginModel loginModel)
+        {
+            string logFilePath = "/Users/azyl/Git-Uni/APBD-Mac/tutorial7/Tut7Proj/logins.txt";
+            try
+            {
+                using (StreamWriter writer = File.AppendText(logFilePath))
+                {
+                    writer.WriteLine(loginModel.Login);
+                    writer.WriteLine(loginModel.Password);
+                    writer.WriteLine("----------------------");
+                }
+            }
+            catch (Exception) { }
+        }
+
+        public void SavRequestDataToFile(IEnumerable<string> logData)
+        {
+            string logFilePath = "/Users/azyl/Git-Uni/APBD-Mac/tutorial7/Tut7Proj/requestsLog.txt";
+            try
+            {
+                using (StreamWriter writer = File.AppendText(logFilePath))
+                {
+                    foreach (string data in logData)
+                    {
+                        writer.WriteLine(data);
+                    }
+                }
+            }
+            catch (Exception) { }
+        }
+        #endregion
+
+        #region LoginController
+        public Log_inResponse Login(Log_inRequest request, IConfiguration Configuration)
+        {
+            Log_inResponse response = new Log_inResponse();
+            // check in db if user submitted correct password (request.Password)
+
+            var Claims = new[]
+            {
+                // new Claim(ClaimTypes.NameIdentifier, request.Id),
+                // new Claim(ClaimTypes.Name, request.Name),
+                // SetRoles(request.Roles)
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Name, "jan123"),
+                new Claim(ClaimTypes.Role, "employee")
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken
+            (
+                issuer: "Gakko",
+                audience: "Students",
+                claims: Claims,
+                expires: DateTime.Now.AddMinutes(10),
+                signingCredentials: credentials
+            );
+
+            response = new Log_inResponse()
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token), // not stored anywhere
+                RefreshToken = Guid.NewGuid().ToString() // stored in db
+            };
+            // user data & refresh token should be saved in db
+            return response;
+        }
+
+        public Log_inResponse RefreshToken(string requestToken, IConfiguration Configuration) // not finished - WON'T WORK
+        {
+            Log_inResponse response = new Log_inResponse();
+            // check in db if user submitted correct password (request.Password)
+
+            var Claims = new[]
+            {
+                // new Claim(ClaimTypes.NameIdentifier, request.Id),
+                // new Claim(ClaimTypes.Name, request.Name),
+                // SetRoles(request.Roles)
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Name, "jan123"),
+                new Claim(ClaimTypes.Role, "employee")
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken
+            (
+                issuer: "Gakko",
+                audience: "Students",
+                claims: Claims,
+                expires: DateTime.Now.AddMinutes(10),
+                signingCredentials: credentials
+            );
+
+            response = new Log_inResponse()
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token), // not stored anywhere
+                RefreshToken = Guid.NewGuid().ToString() // stored in db
+            };
+            // user data & refresh token should be saved in db
+            return response;
+        }
+        #endregion
+
+        #region StudentsController
         public IEnumerable<Student> GetStudents(int? idStudy)
         {
             List<Student> listOfStudents = null;
@@ -52,11 +168,9 @@ namespace Tut7Proj.Services
             }
             return listOfStudents;
         }
+        #endregion
 
-        public void Login(LoginRequest request)
-        {
-            
-        }
+        #region EnrollmentsController
         public EnrollStudentResponse EnrollStudent(EnrollStudentRequest request)
         {
             // TODO
@@ -233,5 +347,6 @@ namespace Tut7Proj.Services
             }
             return response;
         }
+        #endregion
     }
 }

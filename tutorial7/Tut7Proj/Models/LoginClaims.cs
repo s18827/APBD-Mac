@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 
-namespace Tut7Proj.DTOs.Requests
+namespace Tut7Proj.Models
 {
-    public class LoginRequest
+    public class LoginClaims
     {
-        public string Id { get; set; }
+        public string NameIdentifier { get; set; }
         public string Name { get; set; }
-        public string Role { get; set; }
         public IEnumerable<string> Roles { get; set; }
     }
 }

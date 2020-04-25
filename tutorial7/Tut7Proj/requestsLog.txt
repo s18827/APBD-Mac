@@ -1,0 +1,232 @@
+--------------------------------
+		Log Entry:
+21:26:02
+Saturday, 25 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+21:26:02
+Saturday, 25 April 2020
+/favicon.ico
+GET
+
+
+--------------------------------
+		Log Entry:
+21:27:15
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "logiiiinnnnn",
+    "Password": "passssssworrddd"
+}
+--------------------------------
+		Log Entry:
+21:27:35
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "logiiiinnnnn",
+    "Password": "passssssworrddd"
+}
+--------------------------------
+		Log Entry:
+21:29:21
+Saturday, 25 April 2020
+/api/login
+GET
+
+{
+    "Login": "logiiiinnnnn",
+    "Password": "passssssworrddd"
+}
+--------------------------------
+		Log Entry:
+21:29:25
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "logiiiinnnnn",
+    "Password": "passssssworrddd"
+}
+--------------------------------
+		Log Entry:
+21:32:48
+Saturday, 25 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+21:32:55
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "logiiiinnnnn",
+    "Password": "passssssworrddd"
+}
+--------------------------------
+		Log Entry:
+21:34:39
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "logiiiinnnnn",
+    "Password": "passssssworrddd"
+}
+--------------------------------
+		Log Entry:
+21:55:38
+Saturday, 25 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:10:31
+Saturday, 25 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:11:11
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:15:24
+Saturday, 25 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:15:38
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:48:37
+Saturday, 25 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:48:42
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:49:00
+Saturday, 25 April 2020
+/api/students
+GET
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:49:12
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:57:28
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:57:34
+Saturday, 25 April 2020
+/api/stud
+GET
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:57:36
+Saturday, 25 April 2020
+/api/students
+GET
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:57:48
+Saturday, 25 April 2020
+/api/enrollments
+POST
+
+{
+    "Login": "mylogin",
+    "Password": "mypassword"
+}
+--------------------------------
+		Log Entry:
+22:58:02
+Saturday, 25 April 2020
+/api/login
+POST
+
+{
+    "Login": "mylogin1",
+    "Password": "mypassword1"
+}

@@ -1,3 +1,4 @@
+using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tut7Proj.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Tut7Proj.MiddleWare;
 
 namespace Tut7Proj
 {
@@ -23,9 +27,22 @@ namespace Tut7Proj
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services) // JWT BEARER TOKEN
         {
-            services.AddScoped<IDbService, SqlServeDbService>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = "Gakko",
+                    ValidAudience = "Students",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
+                };
+            });
+
+            services.AddScoped<IDbService, SqlServerDbService>();
             services.AddControllers();
         }
 
@@ -36,8 +53,12 @@ namespace Tut7Proj
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseRouting();
+
+            app.UseAuthentication(); // added
 
             app.UseAuthorization();
 

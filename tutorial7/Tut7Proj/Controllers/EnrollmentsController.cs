@@ -7,6 +7,8 @@ using Tut7Proj.DTOs.Responses;
 using Tut7Proj.Models;
 using Microsoft.AspNetCore.Mvc;
 using Tut7Proj.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Tut7Proj.Controllers
 {
@@ -14,15 +16,18 @@ namespace Tut7Proj.Controllers
     [ApiController] // implicit model validation - validates our Required and all other adnotations
     public class EnrollmentsController : ControllerBase
     {
-
         private IDbService _service;
 
-        public EnrollmentsController(IDbService service) // dependency injection
+         public IConfiguration Configuration { get; set; }
+        public EnrollmentsController(IDbService service, IConfiguration configuration) // dependency injection
         {
             _service = service;
+            Configuration = configuration;
         }
+        
         [HttpPost] //, Name = "EnrollStudent"
         [ActionName("EnrollStudent")]
+        [Authorize(Roles = "employee")]
         public IActionResult EnrollStudent(EnrollStudentRequest request)
         {
             try
@@ -43,6 +48,7 @@ namespace Tut7Proj.Controllers
         [Route("promotions")]
         [HttpPost]
         [ActionName("PromoteStudents")]
+        [Authorize(Roles = "employee")]
         public IActionResult PromoteStudents(PromoteStudentsRequest request)
         {
             try
