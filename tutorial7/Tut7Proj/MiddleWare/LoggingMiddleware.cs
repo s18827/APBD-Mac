@@ -29,7 +29,8 @@ namespace Tut7Proj.MiddleWare
                 string querryString = context.Request?.QueryString.ToString(); // nullable as querryString doesn't have to be passed
                 string bodyStr = "";
 
-                using (StreamReader reader = new StreamReader(context.Request.Body, Encoding.UTF8, true, 1024, true)) // fetch body of request to the string
+                using (StreamReader reader = new StreamReader(context.Request.Body, Encoding.UTF8, true, 1024, true))
+                // fetch body of request to the string
                 {
                     bodyStr = await reader.ReadToEndAsync();
                 }
@@ -42,14 +43,23 @@ namespace Tut7Proj.MiddleWare
                     logEntrySeparator, logTime, logDate, path, method, querryString, bodyStr
                 };
 
-                if (path.ToLower().Contains("login") && method == "POST") // WHEN LOGIN AND PASSWORD ARE PASSED SAVE THEM TO FILE (IN FUTURE: SAVE THEM TO DB!!)
+                dbService.SavRequestDataToFile(logData);
+
+                if (path.ToLower().Contains("login") && method == "POST") // WHEN LOGIN AND PASSWORD ARE PASSED SAVE THEM TO .txt FILE AND DB
                 {
                     loginModel = FillLoginModel(bodyStr);
                     dbService.SaveLoginDataToFile(loginModel);
+                    dbService.SaveLoginDataToDb(loginModel);
                 }
-                dbService.SavRequestDataToFile(logData);
-            }
+                // var body = await new StreamReader(request.Body).ReadToEndAsync();
+                // request.Body.Seek(0, SeekOrigin.Begin);
+                // bodyStr = await reader.ReadToEndAsync();
+                // bodyStr.Seek(0, SeekOrigin.Begin);
+                // response.Body.Seek(0, SeekOrigin.Begin);
 
+                context.Request.EnableBuffering();
+                context.Request.Body.Position = 0;
+            }
             if (_next != null) await _next(context); // passing new inforamtion to next middleware
         }
 
@@ -68,8 +78,9 @@ namespace Tut7Proj.MiddleWare
             }
             LoginModel loginModel = new LoginModel()
             {
-                Login = partsList[4],
-                Password = partsList[9]
+                Login = partsList[7], // 4 when not using Login Model in Log_inRequest
+                Password = partsList[12], // 9 when not using Login Model in Log_inRequest
+                Role = partsList[17] // for single Role (which user himself specifies when logging in)
             };
             return loginModel;
         }

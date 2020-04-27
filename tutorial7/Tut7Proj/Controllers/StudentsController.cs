@@ -22,7 +22,7 @@ namespace Tut7Proj.Controllers
         }
 
         [HttpGet]
-        // [Authorize(Roles = "employee")]
+        [Authorize(Roles = "employee")]
         public IActionResult GetStudents(int? idStudy)
         {
             try

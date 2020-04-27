@@ -29,7 +29,8 @@ namespace Tut7Proj
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) // JWT BEARER TOKEN
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -54,7 +55,7 @@ namespace Tut7Proj
                 app.UseDeveloperExceptionPage();
             }
             
-            app.UseMiddleware<LoggingMiddleware>();
+            // app.UseMiddleware<LoggingMiddleware>();
 
             app.UseRouting();
 

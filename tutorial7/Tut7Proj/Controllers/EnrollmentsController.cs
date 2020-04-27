@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -25,7 +24,7 @@ namespace Tut7Proj.Controllers
             Configuration = configuration;
         }
         
-        [HttpPost] //, Name = "EnrollStudent"
+        [HttpPost("enrollStudent")]
         [ActionName("EnrollStudent")]
         [Authorize(Roles = "employee")]
         public IActionResult EnrollStudent(EnrollStudentRequest request)

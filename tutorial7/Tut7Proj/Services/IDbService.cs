@@ -9,10 +9,14 @@ namespace Tut7Proj.Services
     public interface IDbService
     {
         void SavRequestDataToFile(IEnumerable<string> data);
-        void SaveLoginDataToFile(LoginModel loginModel); // docelowo: save to Db
+        void SaveLoginDataToFile(LoginModel loginModel); // for checking purposes
+        void SaveLoginDataToDb(LoginModel loginModel);
+
 
         // ----------------------------------------------------
         Log_inResponse Login(Log_inRequest request, IConfiguration Configuration);
+        // Log_inResponse Login(Log_inRequest request);
+
         Log_inResponse RefreshToken(string requestToken, IConfiguration Configuration);
 
         // ----------------------------------------------------

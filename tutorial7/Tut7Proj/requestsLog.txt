@@ -1,232 +1,394 @@
 --------------------------------
 		Log Entry:
-21:26:02
-Saturday, 25 April 2020
+19:36:20
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login321",
+   		"Password": "password111"
+	}
+}
+--------------------------------
+		Log Entry:
+19:36:35
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login321",
+   		"Password": "password111"
+	}
+}
+--------------------------------
+		Log Entry:
+19:38:05
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1"
+	}
+}
+--------------------------------
+		Log Entry:
+19:40:59
+Monday, 27 April 2020
 /
 GET
 
 
 --------------------------------
 		Log Entry:
-21:26:02
-Saturday, 25 April 2020
-/favicon.ico
-GET
-
-
---------------------------------
-		Log Entry:
-21:27:15
-Saturday, 25 April 2020
-/api/login
-POST
-
-{
-    "Login": "logiiiinnnnn",
-    "Password": "passssssworrddd"
-}
---------------------------------
-		Log Entry:
-21:27:35
-Saturday, 25 April 2020
-/api/login
-POST
-
-{
-    "Login": "logiiiinnnnn",
-    "Password": "passssssworrddd"
-}
---------------------------------
-		Log Entry:
-21:29:21
-Saturday, 25 April 2020
-/api/login
-GET
-
-{
-    "Login": "logiiiinnnnn",
-    "Password": "passssssworrddd"
-}
---------------------------------
-		Log Entry:
-21:29:25
-Saturday, 25 April 2020
-/api/login
-POST
-
-{
-    "Login": "logiiiinnnnn",
-    "Password": "passssssworrddd"
-}
---------------------------------
-		Log Entry:
-21:32:48
-Saturday, 25 April 2020
+19:41:58
+Monday, 27 April 2020
 /
 GET
 
 
 --------------------------------
 		Log Entry:
-21:32:55
-Saturday, 25 April 2020
+19:42:08
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "logiiiinnnnn",
-    "Password": "passssssworrddd"
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1"
+	}
 }
 --------------------------------
 		Log Entry:
-21:34:39
-Saturday, 25 April 2020
+19:42:16
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "logiiiinnnnn",
-    "Password": "passssssworrddd"
+	"LoginModel":
+	{
+   		"Login": "login2",
+   		"Password": "password1"
+	}
 }
 --------------------------------
 		Log Entry:
-21:55:38
-Saturday, 25 April 2020
+19:42:45
+Monday, 27 April 2020
 /
 GET
 
 
 --------------------------------
 		Log Entry:
-22:10:31
-Saturday, 25 April 2020
+19:43:22
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login2",
+   		"Password": "password1"
+	}
+}
+--------------------------------
+		Log Entry:
+19:43:46
+Monday, 27 April 2020
 /
 GET
 
 
 --------------------------------
 		Log Entry:
-22:11:11
-Saturday, 25 April 2020
+19:43:56
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "mylogin",
-    "Password": "mypassword"
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1"
+	}
 }
 --------------------------------
 		Log Entry:
-22:15:24
-Saturday, 25 April 2020
+19:44:34
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1"
+	}
+}
+--------------------------------
+		Log Entry:
+19:44:42
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login3",
+   		"Password": "password1"
+	}
+}
+--------------------------------
+		Log Entry:
+19:55:26
+Monday, 27 April 2020
 /
 GET
 
 
 --------------------------------
 		Log Entry:
-22:15:38
-Saturday, 25 April 2020
+19:55:36
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "mylogin",
-    "Password": "mypassword"
+	"LoginModel":
+	{
+   		"Login": "login3",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
 }
 --------------------------------
 		Log Entry:
-22:48:37
-Saturday, 25 April 2020
+19:56:00
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login3",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:56:15
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:56:41
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:57:29
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:58:20
+Monday, 27 April 2020
 /
 GET
 
 
 --------------------------------
 		Log Entry:
-22:48:42
-Saturday, 25 April 2020
+19:58:25
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "mylogin",
-    "Password": "mypassword"
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
 }
 --------------------------------
 		Log Entry:
-22:49:00
-Saturday, 25 April 2020
-/api/students
+19:58:30
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:59:24
+Monday, 27 April 2020
+/
 GET
 
-{
-    "Login": "mylogin",
-    "Password": "mypassword"
-}
+
 --------------------------------
 		Log Entry:
-22:49:12
-Saturday, 25 April 2020
+19:59:26
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "mylogin",
-    "Password": "mypassword"
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
 }
 --------------------------------
 		Log Entry:
-22:57:28
-Saturday, 25 April 2020
-/api/login
-POST
-
-{
-    "Login": "mylogin",
-    "Password": "mypassword"
-}
---------------------------------
-		Log Entry:
-22:57:34
-Saturday, 25 April 2020
-/api/stud
+20:03:03
+Monday, 27 April 2020
+/
 GET
 
-{
-    "Login": "mylogin",
-    "Password": "mypassword"
-}
+
 --------------------------------
 		Log Entry:
-22:57:36
-Saturday, 25 April 2020
-/api/students
+20:13:05
+Monday, 27 April 2020
+/
 GET
 
-{
-    "Login": "mylogin",
-    "Password": "mypassword"
-}
---------------------------------
-		Log Entry:
-22:57:48
-Saturday, 25 April 2020
-/api/enrollments
-POST
 
-{
-    "Login": "mylogin",
-    "Password": "mypassword"
-}
 --------------------------------
 		Log Entry:
-22:58:02
-Saturday, 25 April 2020
+20:13:07
+Monday, 27 April 2020
 /api/login
 POST
 
 {
-    "Login": "mylogin1",
-    "Password": "mypassword1"
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:13:19
+Monday, 27 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:19:08
+Monday, 27 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:19:10
+Monday, 27 April 2020
+/api/logins
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:26:27
+Monday, 27 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:26:30
+Monday, 27 April 2020
+/api/logins
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
 }

@@ -21,8 +21,9 @@ namespace Tut7Proj.Services
 {
     public class SqlServerDbService : IDbService
     {
-
         private string ConnString = "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin";
+        // public IConfiguration Configuration { get; } // like that? or without that and Login both here and in IDbService: Log_inResponse Login(Log_inRequest request, IConfiguration Configuration); ?
+
 
         #region DataSaving
         public void SaveLoginDataToFile(LoginModel loginModel)
@@ -37,7 +38,26 @@ namespace Tut7Proj.Services
                     writer.WriteLine("----------------------");
                 }
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public void SaveLoginDataToDb(LoginModel loginModel)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("spAddUser", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@login", loginModel.Login));
+                    cmd.Parameters.Add(new SqlParameter("@password", loginModel.Password));
+                    cmd.Parameters.Add(new SqlParameter("@role", loginModel.Role));
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void SavRequestDataToFile(IEnumerable<string> logData)
@@ -53,24 +73,37 @@ namespace Tut7Proj.Services
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
         }
         #endregion
+
 
         #region LoginController
         public Log_inResponse Login(Log_inRequest request, IConfiguration Configuration)
         {
             Log_inResponse response = new Log_inResponse();
-            // check in db if user submitted correct password (request.Password)
+
+            // check if user exists in db + check if password matches login
+            using (SqlConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("spCheckUser", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@login", request.LoginModel.Login));
+                    cmd.Parameters.Add(new SqlParameter("@password", request.LoginModel.Password));
+                    cmd.ExecuteNonQuery();
+                }
+            }
 
             var Claims = new[]
             {
-                // new Claim(ClaimTypes.NameIdentifier, request.Id),
-                // new Claim(ClaimTypes.Name, request.Name),
-                // SetRoles(request.Roles)
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Name, "jan123"),
-                new Claim(ClaimTypes.Role, "employee")
+                // new Claim(ClaimTypes.NameIdentifier, "1"), // czy konieczny?
+                new Claim(ClaimTypes.Name, request.LoginModel.Login),
+                new Claim(ClaimTypes.Role, request.LoginModel.Role)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -89,23 +122,46 @@ namespace Tut7Proj.Services
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token), // not stored anywhere
                 RefreshToken = Guid.NewGuid().ToString() // stored in db
             };
+
+            // add refreshToken to user in db
+            using (SqlConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("spCheckUser", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@refreshToken", response.RefreshToken));
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnString)) // managining connection with db
+                using (SqlCommand cmd = new SqlCommand()) // manages sqlQuerries or other commands send to db
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE _User SET RefreshToken = '@refreshToken' WHERE Login = 'x';";
+                    cmd.Parameters.AddWithValue("refreshToken", response.RefreshToken);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw new ArgumentException();
+            }
             // user data & refresh token should be saved in db
             return response;
         }
 
-        public Log_inResponse RefreshToken(string requestToken, IConfiguration Configuration) // not finished - WON'T WORK
+        public Log_inResponse RefreshToken(string refresh, IConfiguration Configuration) // not finished - WON'T WORK
         {
             Log_inResponse response = new Log_inResponse();
-            // check in db if user submitted correct password (request.Password)
 
             var Claims = new[]
             {
-                // new Claim(ClaimTypes.NameIdentifier, request.Id),
-                // new Claim(ClaimTypes.Name, request.Name),
-                // SetRoles(request.Roles)
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Name, "jan123"),
-                new Claim(ClaimTypes.Role, "employee")
+                new Claim(ClaimTypes.Name, "request.LoginModel.Login"),
+                new Claim(ClaimTypes.Role, "request.LoginModel.Role")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -118,7 +174,6 @@ namespace Tut7Proj.Services
                 expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: credentials
             );
-
             response = new Log_inResponse()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token), // not stored anywhere
@@ -128,6 +183,7 @@ namespace Tut7Proj.Services
             return response;
         }
         #endregion
+
 
         #region StudentsController
         public IEnumerable<Student> GetStudents(int? idStudy)
@@ -169,6 +225,7 @@ namespace Tut7Proj.Services
             return listOfStudents;
         }
         #endregion
+
 
         #region EnrollmentsController
         public EnrollStudentResponse EnrollStudent(EnrollStudentRequest request)
@@ -347,6 +404,8 @@ namespace Tut7Proj.Services
             }
             return response;
         }
+
+
         #endregion
     }
 }
