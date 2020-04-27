@@ -392,3 +392,42 @@ POST
    		"Role":	"student"
 	}
 }
+--------------------------------
+		Log Entry:
+20:55:37
+Monday, 27 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:55:46
+Monday, 27 April 2020
+/api/logins
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:56:06
+Monday, 27 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:56:06
+Monday, 27 April 2020
+/favicon.ico
+GET
+
+

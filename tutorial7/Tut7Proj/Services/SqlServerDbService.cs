@@ -124,44 +124,58 @@ namespace Tut7Proj.Services
             };
 
             // add refreshToken to user in db
-            using (SqlConnection conn = new SqlConnection(ConnString))
-            {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("spCheckUser", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@refreshToken", response.RefreshToken));
-                    cmd.ExecuteNonQuery();
-                }
-            }
             try
             {
                 using (SqlConnection conn = new SqlConnection(ConnString)) // managining connection with db
                 using (SqlCommand cmd = new SqlCommand()) // manages sqlQuerries or other commands send to db
                 {
                     cmd.Connection = conn;
-                    cmd.CommandText = "UPDATE _User SET RefreshToken = '@refreshToken' WHERE Login = 'x';";
-                    cmd.Parameters.AddWithValue("refreshToken", response.RefreshToken);
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE _User SET RefreshToken = @refreshToken WHERE Login = @login;";
+                    cmd.Parameters.AddWithValue("refreshToken", response.RefreshToken);
+                    cmd.Parameters.AddWithValue("@login", request.LoginModel.Login);
+                    int rowsUpdated = cmd.ExecuteNonQuery();
+                    if (rowsUpdated == 0) throw new ArgumentNullException();
                 }
             }
             catch (SqlException)
             {
                 throw new ArgumentException();
             }
-            // user data & refresh token should be saved in db
             return response;
         }
 
-        public Log_inResponse RefreshToken(string refresh, IConfiguration Configuration) // not finished - WON'T WORK
+        public Log_inResponse RefreshToken(string refreshToken, IConfiguration Configuration) // not finished - WON'T WORK
         {
             Log_inResponse response = new Log_inResponse();
-
+            // check if refreshToken from header = refreshToken in db
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnString)) // managining connection with db
+                using (SqlCommand cmd = new SqlCommand()) // manages sqlQuerries or other commands send to db
+                {
+                    cmd.Connection = conn;
+                    conn.Open();
+                    cmd.CommandText = "SELECT 1 FROM _User WHERE Login = @login AND RefreshToken = @refreshToken;";
+                    cmd.Parameters.AddWithValue("refreshToken", refreshToken);
+                    cmd.Parameters.AddWithValue("@login", ); // SKAD TO WZIAC -- NAPISALEM DO GAGO
+                    using(var dr = cmd.ExecuteReader())
+                    {
+                        if(!dr.Read())
+                        {
+                            throw new ArgumentNullException();
+                        }
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw new ArgumentException();
+            }
             var Claims = new[]
             {
-                new Claim(ClaimTypes.Name, "request.LoginModel.Login"),
-                new Claim(ClaimTypes.Role, "request.LoginModel.Role")
+                new Claim(ClaimTypes.Name, "request.LoginModel.Login"), // wziac z info o userze
+                new Claim(ClaimTypes.Role, "request.LoginModel.Role") // wziac z info o userze
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -176,9 +190,28 @@ namespace Tut7Proj.Services
             );
             response = new Log_inResponse()
             {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token), // not stored anywhere
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 RefreshToken = Guid.NewGuid().ToString() // stored in db
             };
+            // add refreshToken to user in db
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnString)) // managining connection with db
+                using (SqlCommand cmd = new SqlCommand()) // manages sqlQuerries or other commands send to db
+                {
+                    cmd.Connection = conn;
+                    conn.Open();
+                    cmd.CommandText = "UPDATE _User SET RefreshToken = @refreshToken WHERE Login = @login;";
+                    cmd.Parameters.AddWithValue("refreshToken", response.RefreshToken);
+                    cmd.Parameters.AddWithValue("@login", request.LoginModel.Login);
+                    int rowsUpdated = cmd.ExecuteNonQuery();
+                    if (rowsUpdated == 0) throw new ArgumentNullException();
+                }
+            }
+            catch (SqlException)
+            {
+                throw new ArgumentException();
+            }
             // user data & refresh token should be saved in db
             return response;
         }

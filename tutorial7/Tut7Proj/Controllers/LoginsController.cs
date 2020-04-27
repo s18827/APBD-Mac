@@ -47,19 +47,48 @@ namespace Tut7Proj.Controllers
                         "Procedure: " + ex.Errors[i].Procedure + "\n");
                 };
                 // if(errorMessages.ToString().Contains(errorCode=1));
-                return BadRequest("Error in request: " + errorMessages.ToString());
+                return BadRequest("Error in SQL stored procedure: " + errorMessages.ToString());
             }
-            catch(ArgumentException)
+            catch (ArgumentNullException)
             {
-                return BadRequest("Refresh token cannot be added to database");
+                return BadRequest("User not updated with RefreshToken");
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest("SqlException: New refresh token cannot be added to database");
             }
         }
 
         [HttpPost("refresh-token/{token}")] // DOESN'T WORK YET - TODO
         public IActionResult RefreshToken(string requestToken)
         {
-            Log_inResponse response = _service.RefreshToken(requestToken, Configuration);
-            return Ok(response);
+            try
+            {
+                Log_inResponse response = _service.RefreshToken(requestToken, Configuration);
+                return Ok(response);
+            }
+            catch (SqlException ex)
+            {
+                StringBuilder errorMessages = new StringBuilder();
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    errorMessages.Append("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                };
+                // if(errorMessages.ToString().Contains(errorCode=1));
+                return BadRequest("Error in sql: " + errorMessages.ToString());
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest("Cannot refresh access token for given refresh token");
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest("SqlException: New refresh token cannot be added to database");
+            }
         }
     }
 }
