@@ -431,3 +431,95 @@ Monday, 27 April 2020
 GET
 
 
+--------------------------------
+		Log Entry:
+22:01:42
+Tuesday, 28 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:01:42
+Tuesday, 28 April 2020
+/favicon.ico
+GET
+
+
+--------------------------------
+		Log Entry:
+22:01:49
+Tuesday, 28 April 2020
+/api/logins
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+22:02:10
+Tuesday, 28 April 2020
+/api/logins
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+22:07:37
+Tuesday, 28 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:07:40
+Tuesday, 28 April 2020
+/api/logins
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+22:12:15
+Tuesday, 28 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+22:12:21
+Tuesday, 28 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}

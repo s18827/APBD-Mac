@@ -76,13 +76,23 @@ namespace Tut7Proj.MiddleWare
                     partsList.Add(s);
                 }
             }
+            
+            string login = partsList[7]; // 4 when not using Login Model in Log_inRequest
+            string password = partsList[12]; // 9 when not using Login Model in Log_inRequest
+            string role = partsList[17]; // for single Role (which user himself specifies when logging in)
+            string salt = PasswordHashing.CreateSalt();
+            string hashedPass = PasswordHashing.Hash(password, salt);
+
             LoginModel loginModel = new LoginModel()
             {
-                Login = partsList[7], // 4 when not using Login Model in Log_inRequest
-                Password = partsList[12], // 9 when not using Login Model in Log_inRequest
-                Role = partsList[17] // for single Role (which user himself specifies when logging in)
+                Login = login,
+                Password = hashedPass,
+                PasswordSalt = salt,
+                Role = role
             };
             return loginModel;
         }
+
+
     }
 }

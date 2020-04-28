@@ -13,7 +13,7 @@ using System.Data.SqlClient;
 
 namespace Tut7Proj.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/login")]
     [ApiController] // implicit model validation - validates our Required and all other adnotations
     public class LoginsController : ControllerBase
     {
@@ -51,11 +51,11 @@ namespace Tut7Proj.Controllers
             }
             catch (ArgumentNullException)
             {
-                return BadRequest("User not updated with RefreshToken");
+                return BadRequest("No passwordSalt found for this user");
             }
             catch (ArgumentException)
             {
-                return BadRequest("SqlException: New refresh token cannot be added to database");
+                return BadRequest("User not updated with RefreshToken");
             }
         }
 
@@ -78,7 +78,7 @@ namespace Tut7Proj.Controllers
                         "Source: " + ex.Errors[i].Source + "\n" +
                         "Procedure: " + ex.Errors[i].Procedure + "\n");
                 };
-                // if(errorMessages.ToString().Contains(errorCode=1));
+                // if(errorMessages.ToString().Contains(errorCode=1)) return NotFound();
                 return BadRequest("Error in sql: " + errorMessages.ToString());
             }
             catch (ArgumentNullException)
