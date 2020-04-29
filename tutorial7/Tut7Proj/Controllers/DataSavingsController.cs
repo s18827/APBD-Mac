@@ -53,7 +53,8 @@ namespace Tut7Proj.Controllers
                         "Procedure: " + ex.Errors[i].Procedure + "\n");
                 };
                 // if(errorMessages.ToString().Contains(errorCode=1));
-                return BadRequest("Error in request: " + errorMessages.ToString());
+                return BadRequest("Error in sql: " + errorMessages.ToString());
+                // return Ok("User logged in");
             }
         }
 

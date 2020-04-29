@@ -22,6 +22,8 @@ namespace Tut7Proj.MiddleWare
         public async Task InvokeAsync(HttpContext context, IDbService dbService)
         {
             LoginModel loginModel = new LoginModel();
+            context.Request.EnableBuffering(); // to later set HttpRequest stream to beginig
+
             if (context.Request != null)
             {
                 string path = context.Request.Path; // /api/students
@@ -51,18 +53,12 @@ namespace Tut7Proj.MiddleWare
                     dbService.SaveLoginDataToFile(loginModel);
                     dbService.SaveLoginDataToDb(loginModel);
                 }
-                // var body = await new StreamReader(request.Body).ReadToEndAsync();
-                // request.Body.Seek(0, SeekOrigin.Begin);
-                // bodyStr = await reader.ReadToEndAsync();
-                // bodyStr.Seek(0, SeekOrigin.Begin);
-                // response.Body.Seek(0, SeekOrigin.Begin);
+                context.Request.Body.Position = 0; // set HttpRequest stream to begining
 
-                context.Request.EnableBuffering();
-                context.Request.Body.Position = 0;
+                if (_next != null) await _next(context); // passing new inforamtion to next middleware
             }
-            if (_next != null) await _next(context); // passing new inforamtion to next middleware
         }
-
+        
         public LoginModel FillLoginModel(string bodyStr) // not nice solution - TO CORRECT
         // signs prohibited in login and password: : and "
         {
@@ -76,7 +72,7 @@ namespace Tut7Proj.MiddleWare
                     partsList.Add(s);
                 }
             }
-            
+
             string login = partsList[7]; // 4 when not using Login Model in Log_inRequest
             string password = partsList[12]; // 9 when not using Login Model in Log_inRequest
             string role = partsList[17]; // for single Role (which user himself specifies when logging in)

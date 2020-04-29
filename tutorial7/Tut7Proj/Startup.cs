@@ -55,7 +55,7 @@ namespace Tut7Proj
                 app.UseDeveloperExceptionPage();
             }
             
-            // app.UseMiddleware<LoggingMiddleware>();
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseRouting();
 

@@ -523,3 +523,459 @@ POST
    		"Role":	"student"
 	}
 }
+--------------------------------
+		Log Entry:
+19:36:19
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+19:36:24
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:36:43
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:36:57
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:43:28
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+19:43:30
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:43:41
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:44:07
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+19:44:25
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+19:44:32
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:44:57
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:47:52
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+19:47:55
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:47:58
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+19:48:02
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:14:24
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:14:48
+Wednesday, 29 April 2020
+/api/login
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:15:31
+Wednesday, 29 April 2020
+/api/refresh-token/5b015c63-25a0-4186-abd8-28171bed6236
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:15:49
+Wednesday, 29 April 2020
+/api/login/refresh-token/5b015c63-25a0-4186-abd8-28171bed6236
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:16:53
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:16:56
+Wednesday, 29 April 2020
+/api/login/refresh-token/5b015c63-25a0-4186-abd8-28171bed6236
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:18:32
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:18:38
+Wednesday, 29 April 2020
+/api/login/
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:20:05
+Wednesday, 29 April 2020
+/api/login/
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:20:36
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:20:38
+Wednesday, 29 April 2020
+/api/login/
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:20:59
+Wednesday, 29 April 2020
+/api/login/refresh-token/7d469e25-9851-451d-bd64-387f3cecbdf0
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:22:02
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:22:06
+Wednesday, 29 April 2020
+/api/login/refresh-token/7d469e25-9851-451d-bd64-387f3cecbdf0
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:23:56
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:23:59
+Wednesday, 29 April 2020
+/api/login/refresh-token/7d469e25-9851-451d-bd64-387f3cecbdf0
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:25:00
+Wednesday, 29 April 2020
+/
+GET
+
+
+--------------------------------
+		Log Entry:
+20:25:11
+Wednesday, 29 April 2020
+/api/login/refresh-token/7d469e25-9851-451d-bd64-387f3cecbdf0
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:25:18
+Wednesday, 29 April 2020
+/api/login/refresh-token/7d469e25-9851-451d-bd64-387f3cecbdf0
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:25:36
+Wednesday, 29 April 2020
+/api/login/refresh-token/4ee1e7bc-a85f-464e-8846-e978def51e45
+POST
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"student"
+	}
+}
+--------------------------------
+		Log Entry:
+20:25:55
+Wednesday, 29 April 2020
+/api/students
+GET
+
+{
+	"LoginModel":
+	{
+   		"Login": "login1",
+   		"Password": "password1",
+   		"Role":	"employee"
+	}
+}

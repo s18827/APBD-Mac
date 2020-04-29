@@ -59,7 +59,7 @@ namespace Tut7Proj.Controllers
             }
         }
 
-        [HttpPost("refresh-token/{token}")] // DOESN'T WORK YET - TODO
+        [HttpPost("refresh-token/{requestToken}")]
         public IActionResult RefreshToken(string requestToken)
         {
             try
