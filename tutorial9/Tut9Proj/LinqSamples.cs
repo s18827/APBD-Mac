@@ -191,6 +191,10 @@ namespace Tut9Proj
             //}
 
             //1. Query syntax (SQL)
+            foreach(var emp in Emps){
+                System.Console.WriteLine(emp.Ename + ", salary = " + emp.Salary);
+            }
+            
             var res = from emp in Emps
                       where emp.Job == "Backend programmer"
                       select new
@@ -353,6 +357,9 @@ namespace Tut9Proj
         public void Task11() // TODO
         {
             // var res = Emps.Aggregate((e1,e2) => e1.Salary > e2.Salary);
+            var res = Emps.Aggregate((v1, v2) => v1.Salary > v2.Salary ? v1 : v2);
+            System.Console.WriteLine(" 11.");
+            System.Console.WriteLine(res.Ename + ", sal = " + res.Salary);
         }
 
         //Using the LINQ language and the SelectMany method, 
