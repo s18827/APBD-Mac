@@ -1,0 +1,5 @@
+1) Scaffold-DbContext 'connString' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+-> dotnet ef dbcontext scaffold "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin"
+     Microsoft.EntityFrameworkCore.SqlServer -o Models -t Student -t Studies -t Enrollment -t _User
+
+2) 
