@@ -41,7 +41,7 @@ namespace ApbdLecture3WebApi.Controllers
         // 3. Passing the data using Body (usually POST)
         // good for creating the data
         [HttpPost]
-        public IActionResult CreateSAndAddtudent(Student student) //import library
+        public IActionResult CreateAndAddStudent(Student student) //import library
         {
             var newIndexNum = $"s{new Random().Next(1, 20000)}";
             student.IndexNumber = newIndexNum;
