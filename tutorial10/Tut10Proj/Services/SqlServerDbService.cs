@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Data;
 using System.Data.Common;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Tut10Proj.Services
         public async Task AddStudent(s18827Context dbContext, AddStudentRequest request)
         {
             var studFound = FoundStudentByPK(dbContext, request.IndexNumber);
-            if (studFound) throw new ArgumentNullException("Student with given index number is already in the db");
+            if (studFound) throw new ArgumentNullException("Student with given index number already exists in the db");
 
             var enrollFound = FoundEnrollmentByPK(dbContext, request.IdEnrollment);
             if (!enrollFound) throw new ArgumentException("Enrollment with given id not found");
@@ -41,34 +42,34 @@ namespace Tut10Proj.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public EditStudentResponse EditStudent(s18827Context context, string indexNumber, EditStudentRequest request)
+        // Attach is somehow in conflict with index number checking
+        public async Task EditStudent(s18827Context dbContext, string indexNumber, EditStudentRequest request)
         {
-            EditStudentResponse response = null;
-            // if(request.FirstName != null) FirstName = request.FirstName;
+            // var studFound = FoundStudentByPK(dbContext, indexNumber);
+            // if (!studFound) throw new ArgumentNullException("Student with given index number not found");
+            var student = new Student();
+            student.IndexNumber = indexNumber;
+            if (request.FirstName != null) student.FirstName = request.FirstName;
+            if (request.LastName != null) student.LastName = request.LastName;
+            if (request.BirthDate != null) student.BirthDate = (DateTime)request.BirthDate;
+            if (request.IdEnrollment != null) student.IdEnrollment = (int)request.IdEnrollment;
 
-            // EditStudentResponse response = null;
-            // var student = new Student {
-            //     IndexNumber = indexNumber,
-            //     FirstName = request.FirstName,
-            //     LastName = request.LastName,
-            //     // BirthDate = request.BirthDate,
-            //     IdEnrollment = request.IdEnrollment
-                
-            //     };
-            response.EditMessage = $"Student with index number = {indexNumber} has been successfully edited.";
-            response.EditedFields.ToString();
-            return response;
-        } 
+            dbContext.Attach(student); // somehow in conflict with index number checking
+            dbContext.Entry(student).State = EntityState.Modified;
 
+            await dbContext.SaveChangesAsync();
+        }
+
+        // Attach is somehow in conflict with index number checking
         public async Task RemoveStudent(s18827Context dbContext, string indexNumber)
         {
-            var studFound = FoundStudentByPK(dbContext, indexNumber);
-            if (!studFound) throw new ArgumentNullException("Student with given index number not found");
-            // var studToRm = dbContext.Student.Find(indexNumber);
-            var studToRm = new Student { IndexNumber = indexNumber };
-            dbContext.Attach(studToRm); // this way I don't have to find/download from db agian the object I want to delete
-            // dbContext.Remove(studToRm); // below insted of this
-            dbContext.Entry(studToRm).State = EntityState.Deleted; // now we can se ChangeDetector and see all changes when Debugging
+            // var studFound = FoundStudentByPK(dbContext, indexNumber);
+            // if (!studFound) throw new ArgumentNullException("Student with given index number not found");
+            // var student = dbContext.Student.Find(indexNumber);
+            var student = new Student { IndexNumber = indexNumber }; // somehow in conflict with index number checking
+            dbContext.Attach(student); // this way I don't have to find/download from db agian the object I want to delete before actually deleting it
+            // dbContext.Remove(student); // below insted of this
+            dbContext.Entry(student).State = EntityState.Deleted; // now we can use ChangeTracker to track all changes of the state of this object when Debugging
             await dbContext.SaveChangesAsync();
         }
 
@@ -91,8 +92,6 @@ namespace Tut10Proj.Services
             }
             return false;
         }
-
-
         #endregion
 
 

@@ -48,35 +48,13 @@ namespace Tut10Proj.Controllers
                 _service.AddStudent(_context, request).Wait();
                 return Ok("Student added successfully");
             }
-            catch (AggregateException ae)
+            catch (AggregateException ae) // AggregateException bc of asynchronous code
             {
                 foreach (var e in ae.InnerExceptions)
                 {
-                    // Handle the custom exception.
-                    if (e is ArgumentNullException) return BadRequest("Student with given index number already exists in the db");
-                    if (e is ArgumentException) return NotFound("Enrollment with given id not found");
-                    else return BadRequest("OTHER ERROR");
-                }
-                return null;
-            }
-        }
-
-        [HttpDelete("{indexNumber}")]
-        public IActionResult RemoveStudent(string indexNumber)
-        {
-            try
-            {
-                _service.RemoveStudent(_context, indexNumber).Wait();
-                return Ok("Student removed successfully");
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var e in ae.InnerExceptions)
-                {
-                    // Handle the custom exception.
-                    if (e is ArgumentNullException) return NotFound("Student with given index number not found");
-                    // if (e is ArgumentException) return NotFound("Enrollment with given id not found");
-                    else return BadRequest("OTHER ERROR - probably costraints violated"); // happens when some other table is dependent on Student
+                    if (e is ArgumentNullException) return BadRequest("Student cannot be added: Student with given index number already exists in the db");
+                    if (e is ArgumentException) return NotFound("Student cannot be added: Enrollment with given id not found");
+                    else return BadRequest("add: OTHER ERROR\n" + e.StackTrace);
                 }
                 return null;
             }
@@ -87,21 +65,40 @@ namespace Tut10Proj.Controllers
         {
             try
             {
-                var edited = "";// = _service.EditStudent(_context, indexNumber, request);
-                return Ok(edited);
+                _service.EditStudent(_context, indexNumber, request).Wait();
+                return Ok($"Student with index number {indexNumber} has been successfully edited");
             }
-            catch (ArgumentNullException)
+             catch (AggregateException ae) // AggregateException bc of asynchronous code
             {
-                return NotFound("Student with given index number not found");
-            }
-            catch (ArgumentException)
-            {
-                return NotFound("Enrollment with given id not found");
-            }
-            catch (Exception)
-            {
-                return BadRequest("OTHER ERROR");
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is ArgumentNullException) return NotFound("Student cannot be edited: Student with given index number not found");
+                    else return BadRequest(e.StackTrace);
+                }
+                return null;
             }
         }
+        
+
+        [HttpDelete("{indexNumber}")]
+        public IActionResult RemoveStudent(string indexNumber)
+        {
+            try
+            {
+                _service.RemoveStudent(_context, indexNumber).Wait();
+                return Ok("Student removed successfully");
+            }
+            catch (AggregateException ae) // AggregateException bc of asynchronous code
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is ArgumentNullException) return NotFound("Student cannot be removed: Student with given index number not found");
+                    // else return BadRequest("OTHER ERROR - probably costraints violated (happens when some other table is dependent on Student table)");
+                    else return BadRequest(e.StackTrace);
+                }
+                return null;
+            }
+        }
+
     }
 }

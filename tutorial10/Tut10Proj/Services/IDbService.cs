@@ -12,7 +12,7 @@ namespace Tut10Proj.Services
 
         Task AddStudent(s18827Context dbContext, AddStudentRequest request);
 
-        // EditStudentResponse EditStudent(s18827Context dbContext, string indexNumber, EditStudentRequest request);
+        Task EditStudent(s18827Context dbContext, string indexNumber, EditStudentRequest request);
 
         Task RemoveStudent(s18827Context dbContext, string indexNumber);
 

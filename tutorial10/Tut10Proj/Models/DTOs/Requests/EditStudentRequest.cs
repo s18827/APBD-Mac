@@ -8,8 +8,5 @@ namespace Tut10Proj.Models.DTOs.Requests
         public string LastName { get; set; } = null;
         public DateTime? BirthDate { get; set; } = null;
         public int? IdEnrollment { get; set; } = null;
-
-        // public DateTime? BirthDate { get; set; } = null;
-        // public int IdEnrollment { get; set; } = 0;
     }
 }
