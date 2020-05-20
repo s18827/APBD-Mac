@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Data;
-using System.Data.Common;
 using System.Collections.Generic;
 using Tut10Proj.Models;
 using System.Linq;
@@ -72,7 +70,9 @@ namespace Tut10Proj.Services
             dbContext.Entry(student).State = EntityState.Deleted; // now we can use ChangeTracker to track all changes of the state of this object when Debugging
             await dbContext.SaveChangesAsync();
         }
+        #endregion
 
+        #region Helper methods
         public bool FoundStudentByPK(s18827Context dbContext, string indexNumber)
         {
             var res = dbContext.Student.Find(indexNumber);
@@ -92,19 +92,124 @@ namespace Tut10Proj.Services
             }
             return false;
         }
+
+        public int GetIdStudiesByName(s18827Context dbContext, string studiesName)
+        {
+            int idStudies = 0;
+            idStudies = dbContext.Studies.Where(s => s.Name == studiesName).FirstOrDefault().IdStudy;
+            return idStudies;
+        }
+
+        public Enrollment GetEnrollmentByIdStudiesAndSemEqual1(s18827Context dbContext, int idStudies)
+        {
+            Enrollment res = null;
+            res = dbContext.Enrollment.Where(e => e.Semester == 1 && e.IdStudy == idStudies).FirstOrDefault();
+            return res;
+        }
+
+        public int GetMaxIdEnrollmentForIdStudies(s18827Context dbContext, int idStudies)
+        {
+            int maxIdEnroll = 0;
+            maxIdEnroll = dbContext.Enrollment.Max(e => e.IdEnrollment);
+            return maxIdEnroll;
+        }
+
+        public void CreateNewEnrollment(s18827Context dbContext, int newIdEnroll, int semester, int idStudies, DateTime startDate)
+        {
+            var enrollFound = FoundEnrollmentByPK(dbContext, newIdEnroll); // shouldn't have any possibility of happening - if happens sth wrong with FindMaxIdEnroll.. probably
+            if (enrollFound) throw new ArgumentException("Enrollment with given id already exists in the db");
+
+            var newEnroll = new Enrollment
+            {
+                IdEnrollment = newIdEnroll,
+                Semester = semester,
+                IdStudy = idStudies,
+                StartDate = DateTime.Now
+            };
+            dbContext.Attach(newEnroll);
+            dbContext.Entry(newEnroll).State = EntityState.Added;
+        }
+
+        public void CreateNewStudent(s18827Context dbContext, string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment)
+        {
+            var enrollFound = FoundStudentByPK(dbContext, indexNumber); // shouldn't have any possibility of happening - if student exists error should be thrown in EnrollStudent
+            if (enrollFound) throw new ArgumentException("Student with given id already exists in the db");
+
+            var newStud = new Student
+            {
+                IndexNumber = indexNumber,
+                FirstName = firstName,
+                LastName = lastName,
+                BirthDate = birthDate,
+                IdEnrollment = idEnrollment
+            };
+            dbContext.Attach(newStud);
+            dbContext.Entry(newStud).State = EntityState.Added;
+        }
+
+        public Enrollment GetEnrollmentByPK(s18827Context dbContext, int id)
+        {
+            var enrollFound = FoundEnrollmentByPK(dbContext, id); // shouldn't have any possibility of happening
+            if (!enrollFound) throw new ArgumentException("Enrollment with given id not found in the db");
+
+            Enrollment enroll = null;
+            enroll = dbContext.Enrollment.Where(e => e.IdEnrollment == id).FirstOrDefault();
+            return enroll;
+        }
         #endregion
 
-
         #region EnrollmentsController
-        // public EnrollStudentResponse EnrollStudent(EnrollStudentRequest request)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
+        public EnrollStudentResponse EnrollStudent(s18827Context dbContext, EnrollStudentRequest request)
+        {
+            // TODO
+            // 1. Check if studies from request exist -> if not 404
+            // 2. Check if enrollment that points to the specific studies that the student wants to enroll exists and semester = 1 -> INSERT, setup StartDate = CurrDate
+            // 3. Create new student (if index of new student (from request) exists) -> 400, else INSERT new Student
+            // 4. return Enrollment mode;
+            EnrollStudentResponse response = null;
 
-        // public PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
+            // AD1.
+            var studiesId = GetIdStudiesByName(dbContext, request.Studies);
+            if (studiesId == 0) throw new ArgumentException("Studies with given name not found");
+
+            // AD2.
+            var findEnroll = GetEnrollmentByIdStudiesAndSemEqual1(dbContext, studiesId);
+            var enrollId = findEnroll.IdEnrollment; // might not work ...?
+            if (findEnroll == null)
+            { // create new Enrollemnt for 1 sem of given studies
+                var newIdEnroll = GetMaxIdEnrollmentForIdStudies(dbContext, studiesId) + 1;
+                CreateNewEnrollment(dbContext, newIdEnroll, 1, studiesId, DateTime.Now);
+                enrollId = newIdEnroll; // assign new enrollmentId to be used later
+            }
+
+            // AD3.
+            var studentExists = FoundStudentByPK(dbContext, request.IndexNumber);
+            if (studentExists) throw new InvalidOperationException("Student with given index number already exists in the db");
+            CreateNewStudent(dbContext, request.IndexNumber, request.FirstName, request.LastName, request.BirthDate, enrollId);
+
+            // AD4.
+            Enrollment thisEnroll = GetEnrollmentByPK(dbContext, enrollId);
+
+            response = new EnrollStudentResponse{
+                IdEnrollment = thisEnroll.IdEnrollment,
+                Semester = thisEnroll.Semester,
+                IdStudy =thisEnroll.IdStudy,
+                StartDate = thisEnroll.StartDate
+            };
+            dbContext.SaveChanges();
+            return response;
+        }
+
+        // TODO
+        public PromoteStudentsResponse PromoteStudents(s18827Context dbContext, PromoteStudentsRequest request)
+        {
+            PromoteStudentsResponse response = null;
+
+            // ...
+
+            dbContext.SaveChanges();
+            return response;
+        }
         #endregion
 
     }
