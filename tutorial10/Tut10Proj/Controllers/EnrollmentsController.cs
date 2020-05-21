@@ -37,11 +37,11 @@ namespace Tut10Proj.Controllers
                 var response = _service.EnrollStudent(_context, request);
                 return CreatedAtAction("EnrollStudent", response);
             }
-            catch (ArgumentException)
+            catch (ArgumentNullException)
             {
                 return NotFound("Studies with given name not found");
             }
-            catch (InvalidOperationException)
+            catch (ArgumentException)
             {
                 return BadRequest("Student with given index number already exists in the db");
             }
@@ -60,15 +60,11 @@ namespace Tut10Proj.Controllers
             }
             catch (ArgumentNullException)
             {
-                return BadRequest("Invalid request");
+                return NotFound("Studies with given name not found");
             }
-            // catch (SqlException)
-            // {
-            //     return NotFound("Studies with given name not found");
-            // }
             catch (ArgumentException)
             {
-                return BadRequest("No values for response found");
+                return BadRequest("There are no students on this semester for given studies");
             }
         }
     }

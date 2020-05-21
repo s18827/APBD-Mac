@@ -73,6 +73,7 @@ namespace Tut10Proj.Controllers
                 foreach (var e in ae.InnerExceptions)
                 {
                     if (e is ArgumentNullException) return NotFound("Student cannot be edited: Student with given index number not found");
+                    if (e is ArgumentException) return NotFound("Student cannot be edited: Enrollment with given id not found");
                     else return BadRequest(e.StackTrace);
                 }
                 return null;

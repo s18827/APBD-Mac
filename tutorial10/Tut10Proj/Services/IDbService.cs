@@ -18,14 +18,18 @@ namespace Tut10Proj.Services
         Task RemoveStudent(s18827Context dbContext, string indexNumber);
 
         // ----------------------------------------------------
-        bool FoundStudentByPK(s18827Context dbContext, string indexNumber);
-        bool FoundEnrollmentByPK(s18827Context dbContext, int id);
+
+        Task<bool> ExistsStudentByPK(s18827Context dbContext, string indexNumber);
+        Task<bool> ExistsEnrollmentByPK(s18827Context dbContext, int id);
         int GetIdStudiesByName(s18827Context dbContext, string studiesName);
-        Enrollment GetEnrollmentByIdStudiesAndSemEqual1(s18827Context dbContext, int studiesId);
-        int GetMaxIdEnrollmentForIdStudies(s18827Context dbContext, int studiesId);
+        Enrollment GetEnrollmentByIdStudiesAndSemesterNum(s18827Context dbContext, int studiesId, int semester);
+        int GetMaxIdEnrollment(s18827Context dbContext);
         void CreateNewEnrollment(s18827Context dbContext, int newIdEnroll, int semester, int idStudies, DateTime startDate);
         void CreateNewStudent(s18827Context dbContext, string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment);
         Enrollment GetEnrollmentByPK(s18827Context dbContext, int id);
+        bool ExistStudentsByIdEnroll(s18827Context dbContext, int idEnrollment);
+        void UpdateStudentsWithNewEnrollment(s18827Context dbContext, int oldSemester, int studiesId, int newIdEnroll);
+
         // ----------------------------------------------------
 
         EnrollStudentResponse EnrollStudent(s18827Context dbContext, EnrollStudentRequest request);
