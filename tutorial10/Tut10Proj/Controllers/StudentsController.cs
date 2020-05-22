@@ -5,6 +5,7 @@ using Tut10Proj.Models;
 using Tut10Proj.Services;
 using System.Linq;
 using Tut10Proj.Models.DTOs.Requests;
+using System.Threading.Tasks;
 
 namespace Tut10Proj.Controllers
 {
@@ -31,7 +32,7 @@ namespace Tut10Proj.Controllers
         {
             try
             {
-                var listOfStudents = _service.ListStudents(_context);
+                var listOfStudents = _service.ListStudents();
                 return Ok(listOfStudents);
             }
             catch (Exception)
@@ -45,7 +46,7 @@ namespace Tut10Proj.Controllers
         {
             try
             {
-                _service.AddStudent(_context, request).Wait();
+                _service.AddStudent(request).Wait();
                 return Ok("Student added successfully");
             }
             catch (AggregateException ae) // AggregateException bc of asynchronous code
@@ -61,11 +62,11 @@ namespace Tut10Proj.Controllers
         }
 
         [HttpPost("{indexNumber}")]
-        public IActionResult EditStudent(string indexNumber, EditStudentRequest request)
+        public async Task<IActionResult> EditStudent(string indexNumber, EditStudentRequest request)
         {
             try
             {
-                _service.EditStudent(_context, indexNumber, request).Wait();
+                await _service.EditStudent(indexNumber, request);
                 return Ok($"Student with index number {indexNumber} has been successfully edited");
             }
              catch (AggregateException ae) // AggregateException bc of asynchronous code
@@ -86,7 +87,7 @@ namespace Tut10Proj.Controllers
         {
             try
             {
-                _service.RemoveStudent(_context, indexNumber).Wait();
+                _service.RemoveStudent(indexNumber);
                 return Ok("Student removed successfully");
             }
             catch (AggregateException ae) // AggregateException bc of asynchronous code

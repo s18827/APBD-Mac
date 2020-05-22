@@ -34,7 +34,7 @@ namespace Tut10Proj.Controllers
         {
             try
             {
-                var response = _service.EnrollStudent(_context, request);
+                var response = _service.EnrollStudent(request);
                 return CreatedAtAction("EnrollStudent", response);
             }
             catch (ArgumentNullException)
@@ -55,7 +55,7 @@ namespace Tut10Proj.Controllers
         {
             try
             {
-                var response = _service.PromoteStudents(_context, request);
+                var response = _service.PromoteStudents(request);
                 return CreatedAtAction("PromoteStudents", response);
             }
             catch (ArgumentNullException)

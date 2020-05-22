@@ -13,20 +13,27 @@ namespace Tut10Proj.Services
     public class SqlServerDbService : IDbService
     {
 
+        private readonly s18827Context dbContext;
+
+        public SqlServerDbService(s18827Context context)
+        {
+            dbContext = context;
+        }
+
         #region StudentsController
-        public IEnumerable<Student> ListStudents(s18827Context dbContext)
+        public IEnumerable<Student> ListStudents()
         {
             var studentsList = dbContext.Student.ToList();
             return studentsList;
         }
 
-        public async Task AddStudent(s18827Context dbContext, AddStudentRequest request)
+        public async Task AddStudent(AddStudentRequest request)
         {
-            // var studExists = ExistsStudentByPK(dbContext, request.IndexNumber).Result;
-            // if (studExists) throw new ArgumentNullException("Student with given index number already exists in the db");
+            var studExists = ExistsStudentByPK(request.IndexNumber).Result; // .Result if Task<bool>
+            if (studExists) throw new ArgumentNullException("Student with given index number already exists in the db");
 
-            // var enrollExists = ExistsEnrollmentByPK(dbContext, request.IdEnrollment).Result;
-            // if (!enrollExists) throw new ArgumentException("Enrollment with given id not Exists");
+            var enrollExists = ExistsEnrollmentByPK(request.IdEnrollment).Result;
+            if (!enrollExists) throw new ArgumentException("Enrollment with given id not Exists");
 
             var student = new Student
             {
@@ -40,14 +47,14 @@ namespace Tut10Proj.Services
             await dbContext.SaveChangesAsync();
         }
 
-        // Attach is somehow in conflict with checks
-        public async Task EditStudent(s18827Context dbContext, string indexNumber, EditStudentRequest request)
+        // async ERROR
+        public async Task EditStudent(string indexNumber, EditStudentRequest request)
         {
-            // var studExists = ExistsStudentByPK(dbContext, indexNumber).Result;
-            // if (!studExists) throw new ArgumentNullException("Student with given index number not Exists");
+            var studExists = await ExistsStudentByPK(indexNumber);
+            if (!studExists) throw new ArgumentNullException("Student with given index number does not exists");
 
-            // var enrollExists = ExistsEnrollmentByPK(dbContext, (int)request.IdEnrollment).Result;
-            // if (!enrollExists) throw new ArgumentException("Enrollment with given id not Exists");
+            var enrollExists = await ExistsEnrollmentByPK((int)request.IdEnrollment);
+            if (!enrollExists) throw new ArgumentException("Enrollment with given id does not exists");
 
             var student = new Student();
             student.IndexNumber = indexNumber;
@@ -56,48 +63,54 @@ namespace Tut10Proj.Services
             if (request.BirthDate != null) student.BirthDate = (DateTime)request.BirthDate;
             if (request.IdEnrollment != null) student.IdEnrollment = (int)request.IdEnrollment;
 
-            dbContext.Attach(student); // somehow in conflict with index number checking
+            dbContext.Attach(student); // somehow in conflict with checks
             dbContext.Entry(student).State = EntityState.Modified;
 
             await dbContext.SaveChangesAsync();
         }
 
-        // Attach is somehow in conflict with checks
-        public async Task RemoveStudent(s18827Context dbContext, string indexNumber)
+        // anync ERROR
+        public async Task RemoveStudent(string indexNumber)
         {
-            // var studExists = ExistsStudentByPK(dbContext, indexNumber).Result;
-            // if (!studExists) throw new ArgumentNullException("Student with given index number not Exists");
+            var studExists = ExistsStudentByPK(indexNumber).Result;
+            if (!studExists) throw new ArgumentNullException("Student with given index number not Exists");
             // var student = dbContext.Student.Find(indexNumber);
-            var student = new Student { IndexNumber = indexNumber }; // somehow in conflict with index number checking
-            dbContext.Attach(student); // this way I don't have to find/download from db agian the object I want to delete before actually deleting it
-            // dbContext.Remove(student); // below insted of this
+            var student = new Student { IndexNumber = indexNumber };
+            dbContext.Attach(student); // somehow in conflict with checks
+            // this way I don't have to find/download from db agian the object I want to delete before actually deleting it
+            // dbContext.Remove(student); // below line is instead of this line
             dbContext.Entry(student).State = EntityState.Deleted; // now we can use ChangeTracker to track all changes of the state of this object when Debugging
             await dbContext.SaveChangesAsync();
         }
         #endregion
 
         #region Helper methods
-        public Task<bool> ExistsStudentByPK(s18827Context dbContext, string indexNumber)
+        public async Task<bool> ExistsStudentByPK(string indexNumber)
         {
             var res = dbContext.Student.Find(indexNumber);
             if (res != null)
             {
-                return Task.FromResult(true);
+                // await Task.FromResult(true);
+                return true;
             }
-            return Task.FromResult(false);
+            // await Task.FromResult(false);
+            return false;
         }
 
-        public Task<bool> ExistsEnrollmentByPK(s18827Context dbContext, int id)
+        public async Task<bool> ExistsEnrollmentByPK(int id)
         {
             var res = dbContext.Enrollment.Find(id);
             if (res != null)
             {
-                return Task.FromResult(true);
+                // var res = await true;
+                return true;
+                // return true;
             }
-            return Task.FromResult(false);
+            // await Task.FromResult(false);
+            return false;
         }
 
-        public int GetIdStudiesByName(s18827Context dbContext, string studiesName)
+        public int GetIdStudiesByName(string studiesName)
         {
             int idStudies = 0;
             var stud = dbContext.Studies.Where(s => s.Name == studiesName).FirstOrDefault();
@@ -105,23 +118,23 @@ namespace Tut10Proj.Services
             return stud.IdStudy;
         }
 
-        public Enrollment GetEnrollmentByIdStudiesAndSemesterNum(s18827Context dbContext, int idStudies, int semester)
+        public Enrollment GetEnrollmentByIdStudiesAndSemesterNum(int idStudies, int semester)
         {
             Enrollment res = null;
             res = dbContext.Enrollment.Where(e => e.Semester == semester && e.IdStudy == idStudies).FirstOrDefault();
             return res;
         }
 
-        public int GetMaxIdEnrollment(s18827Context dbContext)
+        public int GetMaxIdEnrollment()
         {
             int maxIdEnroll = 0;
             maxIdEnroll = dbContext.Enrollment.Max(e => e.IdEnrollment);
             return maxIdEnroll;
         }
 
-        public void CreateNewEnrollment(s18827Context dbContext, int newIdEnroll, int semester, int idStudies, DateTime startDate)
+        public void CreateNewEnrollment(int newIdEnroll, int semester, int idStudies, DateTime startDate)
         {
-            var enrollExists = ExistsEnrollmentByPK(dbContext, newIdEnroll).Result; // shouldn't have any possibility of happening - if happens sth wrong with FindMaxIdEnroll.. probably
+            var enrollExists = ExistsEnrollmentByPK(newIdEnroll).Result; // shouldn't have any possibility of happening - if happens sth wrong with FindMaxIdEnroll.. probably
             if (enrollExists) throw new ArgumentException("Enrollment with given id already exists in the db");
 
             var newEnroll = new Enrollment
@@ -135,9 +148,9 @@ namespace Tut10Proj.Services
             dbContext.Entry(newEnroll).State = EntityState.Added;
         }
 
-        public void CreateNewStudent(s18827Context dbContext, string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment)
+        public void CreateNewStudent(string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment)
         {
-            var enrollExists = ExistsStudentByPK(dbContext, indexNumber).Result; // shouldn't have any possibility of happening - if student exists error should be thrown in EnrollStudent
+            var enrollExists = ExistsStudentByPK(indexNumber).Result; // shouldn't have any possibility of happening - if student exists error should be thrown in EnrollStudent
             if (enrollExists) throw new ArgumentException("Student with given id already exists in the db");
 
             var newStud = new Student
@@ -152,9 +165,9 @@ namespace Tut10Proj.Services
             dbContext.Entry(newStud).State = EntityState.Added;
         }
 
-        public Enrollment GetEnrollmentByPK(s18827Context dbContext, int id)
+        public Enrollment GetEnrollmentByPK(int id)
         {
-            var enrollExists = ExistsEnrollmentByPK(dbContext, id).Result; // shouldn't have any possibility of happening
+            var enrollExists = ExistsEnrollmentByPK(id).Result; // shouldn't have any possibility of happening
             if (!enrollExists) throw new ArgumentException("Enrollment with given id not found in the db");
 
             Enrollment enroll = null;
@@ -162,7 +175,7 @@ namespace Tut10Proj.Services
             return enroll;
         }
 
-        public bool ExistStudentsByIdEnroll(s18827Context dbContext, int idEnrollment)
+        public bool ExistStudentsByIdEnroll(int idEnrollment)
         {
             var res = dbContext.Student.Any(s => s.IdEnrollment == idEnrollment);
             if (res)
@@ -171,16 +184,16 @@ namespace Tut10Proj.Services
             }
             return false;
         }
-        public void UpdateStudentsWithNewEnrollment(s18827Context dbContext, int oldSemester, int studiesId, int newIdEnroll)
+        public void UpdateStudentsWithNewEnrollment(int oldSemester, int studiesId, int newIdEnroll)
         {
             var oldIdEnroll = dbContext.Enrollment.Where(e => e.Semester == oldSemester && e.IdStudy == studiesId).FirstOrDefault();
             if (oldIdEnroll == null) throw new ArgumentException("There are no students on this semester for given studies");
 
-            var enrollExists = ExistsEnrollmentByPK(dbContext, newIdEnroll).Result; // shouldn't have any possibility of happening
+            var enrollExists = ExistsEnrollmentByPK(newIdEnroll).Result; // shouldn't have any possibility of happening
             if (!enrollExists) throw new ArgumentException("Enrollment with given id not found in the db");
 
             bool existStudentsForIdEnroll = true;
-            existStudentsForIdEnroll = ExistStudentsByIdEnroll(dbContext, oldIdEnroll.IdEnrollment);
+            existStudentsForIdEnroll = ExistStudentsByIdEnroll(oldIdEnroll.IdEnrollment);
             if (!existStudentsForIdEnroll) throw new ArgumentException("There are no students on this semester for given studies");
 
             var studentList = dbContext.Student.Where(s => s.IdEnrollment == oldIdEnroll.IdEnrollment).Select(s => new Student
@@ -199,7 +212,7 @@ namespace Tut10Proj.Services
         #endregion
 
         #region EnrollmentsController
-        public EnrollStudentResponse EnrollStudent(s18827Context dbContext, EnrollStudentRequest request)
+        public EnrollStudentResponse EnrollStudent(EnrollStudentRequest request)
         {
             // TODO
             // 1. Check if Studies from request exist -> if not 404
@@ -210,26 +223,26 @@ namespace Tut10Proj.Services
             EnrollStudentResponse response = null;
 
             // AD1.
-            var studiesId = GetIdStudiesByName(dbContext, request.Studies);
+            var studiesId = GetIdStudiesByName(request.Studies);
             if (studiesId == 0) throw new ArgumentNullException("Studies with given name not Exists");
 
             // AD2.
-            var findEnroll = GetEnrollmentByIdStudiesAndSemesterNum(dbContext, studiesId, 1);
+            var findEnroll = GetEnrollmentByIdStudiesAndSemesterNum(studiesId, 1);
             var enrollId = findEnroll.IdEnrollment;
             if (findEnroll == null)
             { // create new Enrollemnt for first sem of given studies
-                var newIdEnroll = GetMaxIdEnrollment(dbContext) + 1;
-                CreateNewEnrollment(dbContext, newIdEnroll, 1, studiesId, DateTime.Now);
+                var newIdEnroll = GetMaxIdEnrollment() + 1;
+                CreateNewEnrollment(newIdEnroll, 1, studiesId, DateTime.Now);
                 enrollId = newIdEnroll; // assign new enrollmentId to be used later
             }
 
             // AD3.
-            var studentExists = ExistsStudentByPK(dbContext, request.IndexNumber).Result; // CHANGED
+            var studentExists = ExistsStudentByPK(request.IndexNumber).Result;
             if (studentExists) throw new ArgumentException("Student with given index number already exists in the db");
-            CreateNewStudent(dbContext, request.IndexNumber, request.FirstName, request.LastName, request.BirthDate, enrollId);
+            CreateNewStudent(request.IndexNumber, request.FirstName, request.LastName, request.BirthDate, enrollId);
 
             // AD4.
-            Enrollment thisEnroll = GetEnrollmentByPK(dbContext, enrollId);
+            Enrollment thisEnroll = GetEnrollmentByPK(enrollId);
 
             response = new EnrollStudentResponse
             {
@@ -242,7 +255,7 @@ namespace Tut10Proj.Services
             return response;
         }
 
-        public PromoteStudentsResponse PromoteStudents(s18827Context dbContext, PromoteStudentsRequest request)
+        public PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request)
         {
             // TODO
             // 1. Check Studies
@@ -252,16 +265,16 @@ namespace Tut10Proj.Services
             PromoteStudentsResponse response = null;
 
             // AD1.
-            var studiesId = GetIdStudiesByName(dbContext, request.Studies);
+            var studiesId = GetIdStudiesByName(request.Studies);
             if (studiesId == 0) throw new ArgumentNullException("Studies with given name not found");
 
             // AD2.
-            Enrollment findEnroll = GetEnrollmentByIdStudiesAndSemesterNum(dbContext, studiesId, request.Semester + 1);
+            Enrollment findEnroll = GetEnrollmentByIdStudiesAndSemesterNum(studiesId, request.Semester + 1);
             int enrollId = 0;
             if (findEnroll == null)
             { // create new Enrollemnt for semester = sem from request + 1
-                var newIdEnroll = GetMaxIdEnrollment(dbContext) + 1;
-                CreateNewEnrollment(dbContext, newIdEnroll, request.Semester + 1, studiesId, DateTime.Now);
+                var newIdEnroll = GetMaxIdEnrollment() + 1;
+                CreateNewEnrollment(newIdEnroll, request.Semester + 1, studiesId, DateTime.Now);
                 enrollId = newIdEnroll; // assign new enrollmentId to be used later
             }
             else { enrollId = findEnroll.IdEnrollment; }
@@ -269,7 +282,7 @@ namespace Tut10Proj.Services
             // AD3.
             try
             {
-                UpdateStudentsWithNewEnrollment(dbContext, request.Semester, studiesId, enrollId);
+                UpdateStudentsWithNewEnrollment(request.Semester, studiesId, enrollId);
             }
             catch (ArgumentException)
             {
@@ -277,7 +290,7 @@ namespace Tut10Proj.Services
             }
 
             // AD4.
-            Enrollment newEnroll = GetEnrollmentByPK(dbContext, enrollId);
+            Enrollment newEnroll = GetEnrollmentByPK(enrollId);
 
             response = new PromoteStudentsResponse
             { // change values
