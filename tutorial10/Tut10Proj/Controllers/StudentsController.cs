@@ -14,25 +14,22 @@ namespace Tut10Proj.Controllers
     public class StudentsController : ControllerBase
     {
 
-        private readonly s18827Context _context;
-
         private IDbService _service;
         // public IConfiguration Configuration { get; set; }
 
-        public StudentsController(IDbService service, s18827Context context) // dependency injection
+        public StudentsController(IDbService service) // dependency injection
         {
             _service = service;
             // Configuration = configuration;
-            _context = context;
         }
 
         [HttpGet]
         // [Authorize(Roles = "employee")]
-        public IActionResult ListStudents()
+        public async Task<IActionResult> ListStudents()
         {
             try
             {
-                var listOfStudents = _service.ListStudents();
+                var listOfStudents = await _service.ListStudents();
                 return Ok(listOfStudents);
             }
             catch (Exception)
@@ -42,11 +39,11 @@ namespace Tut10Proj.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddStudent(AddStudentRequest request)
+        public async Task<IActionResult> AddStudent(AddStudentRequest request)
         {
             try
             {
-                _service.AddStudent(request).Wait();
+                await _service.AddStudent(request); // make it return entity of added student to be printed in Ok(...);
                 return Ok("Student added successfully");
             }
             catch (AggregateException ae) // AggregateException bc of asynchronous code
@@ -61,13 +58,14 @@ namespace Tut10Proj.Controllers
             }
         }
 
-        [HttpPost("{indexNumber}")]
+        [HttpPut("{indexNumber}")]
         public async Task<IActionResult> EditStudent(string indexNumber, EditStudentRequest request)
         {
             try
             {
                 await _service.EditStudent(indexNumber, request);
-                return Ok($"Student with index number {indexNumber} has been successfully edited");
+                // return Ok($"Student with index number {indexNumber} has been successfully edited");
+                return NoContent();
             }
              catch (AggregateException ae) // AggregateException bc of asynchronous code
             {
@@ -83,12 +81,13 @@ namespace Tut10Proj.Controllers
         
 
         [HttpDelete("{indexNumber}")]
-        public IActionResult RemoveStudent(string indexNumber)
+        public async Task<IActionResult> RemoveStudent(string indexNumber)
         {
             try
             {
-                _service.RemoveStudent(indexNumber);
-                return Ok("Student removed successfully");
+                await _service.RemoveStudent(indexNumber);
+                // return Ok("Student removed successfully");
+                return NoContent();
             }
             catch (AggregateException ae) // AggregateException bc of asynchronous code
             {

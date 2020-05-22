@@ -28,7 +28,7 @@ namespace Tut10Proj.Services
         Task CreateNewStudent(string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment);
         Task<Enrollment> GetEnrollmentByPK(int id);
         Task<bool> ExistStudentsByIdEnroll(int idEnrollment);
-        Task UpdateStudentsWithNewEnrollment(int oldSemester, int studiesId, int newIdEnroll);
+        Task UpdateStudentsWithNewEnrollment(Enrollment oldEnrollment, int oldSemester, int studiesId, int newIdEnroll);
 
         // ----------------------------------------------------
 

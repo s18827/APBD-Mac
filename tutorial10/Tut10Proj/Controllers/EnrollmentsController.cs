@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tut10Proj.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Tut10Proj.Controllers
 {
@@ -15,35 +16,35 @@ namespace Tut10Proj.Controllers
     [ApiController] // implicit model validation - validates our Required and all other adnotations
     public class EnrollmentsController : ControllerBase
     {
-        private readonly s18827Context _context;
-
         private IDbService _service;
 
         // public IConfiguration Configuration { get; set; }
-        public EnrollmentsController(IDbService service, s18827Context context) // dependency injection
+        public EnrollmentsController(IDbService service) // dependency injection
         {
             _service = service;
             // Configuration = configuration;
-            _context = context;
+   
         }
 
         [HttpPost("enrollStudent")]
         [ActionName("EnrollStudent")]
         // [Authorize(Roles = "employee")]
-        public IActionResult EnrollStudent(EnrollStudentRequest request)
+        public async Task<IActionResult> EnrollStudent(EnrollStudentRequest request)
         {
             try
             {
-                var response = _service.EnrollStudent(request);
+                var response = await _service.EnrollStudent(request);
                 return CreatedAtAction("EnrollStudent", response);
             }
-            catch (ArgumentNullException)
+             catch (AggregateException ae) // AggregateException bc of asynchronous code
             {
-                return NotFound("Studies with given name not found");
-            }
-            catch (ArgumentException)
-            {
-                return BadRequest("Student with given index number already exists in the db");
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is ArgumentNullException) return NotFound("Studies with given name not found");
+                    if (e is ArgumentException) BadRequest("Student with given index number already exists");
+                    // else return BadRequest(e.StackTrace);
+                }
+                return null;
             }
         }
 
@@ -51,20 +52,22 @@ namespace Tut10Proj.Controllers
         [HttpPost]
         [ActionName("PromoteStudents")]
         // [Authorize(Roles = "employee")]
-        public IActionResult PromoteStudents(PromoteStudentsRequest request)
+        public async Task<IActionResult> PromoteStudents(PromoteStudentsRequest request)
         {
             try
             {
-                var response = _service.PromoteStudents(request);
+                var response = await _service.PromoteStudents(request);
                 return CreatedAtAction("PromoteStudents", response);
             }
-            catch (ArgumentNullException)
+             catch (AggregateException ae) // AggregateException bc of asynchronous code
             {
-                return NotFound("Studies with given name not found");
-            }
-            catch (ArgumentException)
-            {
-                return BadRequest("There are no students on this semester for given studies");
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is ArgumentNullException) return NotFound("Studies with given name not found");
+                    if (e is ArgumentException) return BadRequest("There are no students on this semester for given studies");
+                    // else return BadRequest(e.StackTrace);
+                }
+                return null;
             }
         }
     }

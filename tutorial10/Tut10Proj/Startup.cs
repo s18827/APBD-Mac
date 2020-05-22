@@ -27,7 +27,7 @@ namespace Tut10Proj
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IDbService, SqlServerDbService>(); // ADDED
+            services.AddTransient<IDbService, SqlServerDbService>(); // ADDED
             services.AddDbContext<s18827Context>(options => // ADDED
             {
                 options.UseSqlServer("Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin");
