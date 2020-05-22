@@ -11,7 +11,7 @@ namespace Tut10Proj.Services
     {
         Task<IEnumerable<Student>> ListStudents();
 
-        Task AddStudent(AddStudentRequest request);
+        Task<AddStudentResponse> AddStudent(AddStudentRequest request);
 
         Task EditStudent(string indexNumber, EditStudentRequest request);
 
@@ -19,14 +19,14 @@ namespace Tut10Proj.Services
 
         // ----------------------------------------------------
 
-        Task<Student> ExistsStudentByPK(string indexNumber);
-        Task<Enrollment> ExistsEnrollmentByPK(int id);
+        Task<Student> GetStudentByPK(string indexNumber);
+        Task<Enrollment> GetEnrollmentByPK(int id);
         Task<int> GetIdStudiesByName(string studiesName);
         Task<Enrollment> GetEnrollmentByIdStudiesAndSemesterNum(int studiesId, int semester);
         Task<int> GetMaxIdEnrollment();
         Task CreateNewEnrollment(int newIdEnroll, int semester, int idStudies, DateTime startDate);
         Task CreateNewStudent(string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment);
-        Task<Enrollment> GetEnrollmentByPK(int id);
+        // Task<Enrollment> GetEnrollmentByPK(int id);
         Task<bool> ExistStudentsByIdEnroll(int idEnrollment);
         Task UpdateStudentsWithNewEnrollment(Enrollment oldEnrollment, int oldSemester, int studiesId, int newIdEnroll);
 

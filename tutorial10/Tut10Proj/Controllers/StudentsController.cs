@@ -39,12 +39,14 @@ namespace Tut10Proj.Controllers
         }
 
         [HttpPost]
+        [ActionName("AddStudent")]
         public async Task<IActionResult> AddStudent(AddStudentRequest request)
         {
             try
             {
-                await _service.AddStudent(request); // make it return entity of added student to be printed in Ok(...);
-                return Ok("Student added successfully");
+                var response = await _service.AddStudent(request); // make it return entity of added student to be printed in Ok(...);
+                return CreatedAtAction("AddStudent", response);
+                // return Ok(response);
             }
             catch (AggregateException ae) // AggregateException bc of asynchronous code
             {
