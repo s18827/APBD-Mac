@@ -58,7 +58,6 @@ namespace Tut10Proj.Services
             return response;
         }
 
-        // async ERROR
         public async Task EditStudent(string indexNumber, EditStudentRequest request)
         {
             var stud = await GetStudentByPK(indexNumber);
@@ -81,7 +80,6 @@ namespace Tut10Proj.Services
             await dbContext.SaveChangesAsync();
         }
 
-        // async ERROR
         public async Task RemoveStudent(string indexNumber)
         {
             var stud = await GetStudentByPK(indexNumber);
@@ -128,7 +126,7 @@ namespace Tut10Proj.Services
         public async Task CreateNewEnrollment(int newIdEnroll, int semester, int idStudies, DateTime startDate)
         {
             var enroll = await GetEnrollmentByPK(newIdEnroll);
-            if (enroll != null) throw new ArgumentException("Enrollment with given id already exists");
+            if (enroll != null) throw new ArgumentException("New Enrollemnt cannot be created: Enrollment with given id already exists");
 
             var newEnroll = new Enrollment
             {
@@ -145,9 +143,9 @@ namespace Tut10Proj.Services
         public async Task CreateNewStudent(string indexNumber, string firstName, string lastName, DateTime birthDate, int idEnrollment)
         {
             var student = await GetStudentByPK(indexNumber);
-            if (student != null) throw new ArgumentException("Student with given index number already exists");
-            // var enroll = await ExistsEnrollmentByPK(idEnrollment); // shouldn't have any possibility of happening - if student exists error should be thrown in EnrollStudent
-            // if (enroll != null) throw new ArgumentNullException("Enrollment with this id not found");
+            if (student != null) throw new ArgumentException("New Student cannot be created: Student with given index number already exists");
+            var enroll = await GetEnrollmentByPK(idEnrollment); // shouldn't have any possibility of happening - if student exists error should be thrown in EnrollStudent
+            if (enroll != null) throw new ArgumentNullException("New Student cannot be created: Enrollment with given id not found");
 
             var newStud = new Student
             {
@@ -171,8 +169,8 @@ namespace Tut10Proj.Services
             // var oldIdEnroll = await dbContext.Enrollment.Where(e => e.Semester == oldSemester && e.IdStudy == studiesId).FirstOrDefaultAsync();
             // if (oldIdEnroll == null) throw new ArgumentException("USWNE: There are no students on this semester for given studies");
 
-            // var enroll = await ExistsEnrollmentByPK(newIdEnroll); // shouldn't have any possibility of happening
-            // if (enroll == null) throw new ArgumentException("Enrollment with given id not found");
+            var enroll = await GetEnrollmentByPK(newIdEnroll); // shouldn't have any possibility of happening
+            if (enroll == null) throw new ArgumentException("Students cannot be updated with new Enrollment: Enrollment with given id not found");
 
             // bool existStudentsForIdEnroll = true; // not needded since above
             // existStudentsForIdEnroll = await ExistStudentsByIdEnroll(oldIdEnroll.IdEnrollment);
@@ -245,9 +243,9 @@ namespace Tut10Proj.Services
 
             // AD1.
             var studiesId = await GetIdStudiesByName(request.Studies);
-            if (studiesId == 0) throw new ArgumentNullException("Studies with given name not found");
+            if (studiesId == 0) throw new ArgumentNullException("Promoting Students cannot be copleted: Studies with given name not found");
             var oldEnroll = await GetEnrollmentByIdStudiesAndSemesterNum(studiesId, request.Semester);
-            if (oldEnroll == null) throw new ArgumentException("There are no Students on this semester for given Studies");
+            if (oldEnroll == null) throw new ArgumentException("Promoting Students cannot be copleted: There are no Students on this semester for given Studies");
 
             // AD2.
             Enrollment findEnroll = await GetEnrollmentByIdStudiesAndSemesterNum(studiesId, request.Semester + 1);
