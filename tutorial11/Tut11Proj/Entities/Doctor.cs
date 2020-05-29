@@ -1,24 +1,22 @@
-using System.Collections;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace Tut11Proj.Models
+namespace Tut11Proj.Entities
 {
-    public class Patient
+    public class Doctor
     {
         // [Key]
         // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdPatient { get; set; }
-
+        public int IdDoctor { get; set; }
         // [Required]
         public string FirstName { get; set; }
         // [Required]
         public string LastName { get; set; }
-        // [Required]
-        public DateTime Birthdate { get; set; }
+
+        public string Email { get; set; }
 
         public virtual ICollection<Prescription> Precriptions { get; set; }
+
     }
 }

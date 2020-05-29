@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Tut11Proj.Models;
+using Tut11Proj.Entities;
+using Tut11Proj.Services;
 
 namespace Tut11Proj.Controllers
 {
@@ -14,9 +15,11 @@ namespace Tut11Proj.Controllers
     public class PatientsController : ControllerBase
     {
 
+        private IDbService _service;
         private readonly s18827DbContext _context;
-        public PatientsController(s18827DbContext context)
+        public PatientsController(IDbService service, s18827DbContext context)
         {
+            _service = service;
             _context = context;
         }
 
@@ -34,9 +37,19 @@ namespace Tut11Proj.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPatients()
+        public async Task<IActionResult> ListPatients()
         {
-            return Ok(_context.Patients.ToList());
+            try
+            {
+                // var listOfStudents = await _service.ListStudents();
+                // return Ok(listOfStudents);
+                var patientsList = await _service.ListPatients();
+                return Ok(patientsList);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

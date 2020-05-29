@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Tut11Proj.Services;
 using Tut11Proj.Models;
 
 namespace Tut11Proj
@@ -26,8 +27,9 @@ namespace Tut11Proj
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<s18827DbContext>();
-            services.AddDbContext<s18827DbContext>(options =>
+            services.AddTransient<IDbService, SqlServerDbService>(); // ADDED
+            // services.AddDbContext<s18827DbContext>(); // ADDED
+            services.AddDbContext<s18827DbContext>(options => // ADDED
             {
                 options.UseSqlServer("Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin");
             });

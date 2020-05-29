@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace Tut11Proj.Models
+namespace Tut11Proj.Entities
 {
     public class Prescription_Medicament
     {

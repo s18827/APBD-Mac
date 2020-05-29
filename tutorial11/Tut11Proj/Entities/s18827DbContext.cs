@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tut11Proj.Configuration;
 
-namespace Tut11Proj.Models
+namespace Tut11Proj.Entities
 {
     public class s18827DbContext : DbContext
     {
@@ -48,7 +48,6 @@ namespace Tut11Proj.Models
             //             .HasOne(pr_m => pr_m.Prescription)
             //             .WithMany(pr => pr.Prescriptions_Medicaments)
             //             .HasForeignKey(pr_m => pr_m.IdPrescription);
-
 
         }
     }

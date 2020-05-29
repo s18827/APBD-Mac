@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Tut11Proj.Models;
+using Tut11Proj.Entities;
 
 namespace Tut11Proj.Configuration
 {
