@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tut10Proj.Models
+namespace Tut10Proj.Entities
 {
     public partial class Enrollment
     {

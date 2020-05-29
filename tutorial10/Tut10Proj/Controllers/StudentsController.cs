@@ -1,10 +1,10 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Tut10Proj.Models;
+using Tut10Proj.Entities;
 using Tut10Proj.Services;
 using System.Linq;
-using Tut10Proj.Models.DTOs.Requests;
+using Tut10Proj.DTOs.Requests;
 using System.Threading.Tasks;
 
 namespace Tut10Proj.Controllers

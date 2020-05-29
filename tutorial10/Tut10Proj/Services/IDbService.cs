@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tut10Proj.Models;
-using Tut10Proj.Models.DTOs.Requests;
-using Tut10Proj.Models.DTOs.Responses;
+using Tut10Proj.Entities;
+using Tut10Proj.DTOs.Requests;
+using Tut10Proj.DTOs.Responses;
 
 namespace Tut10Proj.Services
 {

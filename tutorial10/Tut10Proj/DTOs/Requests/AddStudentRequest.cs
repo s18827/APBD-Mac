@@ -1,6 +1,6 @@
 using System;
 
-namespace Tut10Proj.Models.DTOs.Requests
+namespace Tut10Proj.DTOs.Requests
 {
     public class AddStudentRequest
     {

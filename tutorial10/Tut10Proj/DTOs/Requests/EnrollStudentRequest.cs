@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Tut10Proj.Models.DTOs.Requests
+namespace Tut10Proj.DTOs.Requests
 {
     /*
 {

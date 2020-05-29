@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Tut10Proj.Models
+namespace Tut10Proj.Entities
 {
     public partial class s18827Context : DbContext
     {

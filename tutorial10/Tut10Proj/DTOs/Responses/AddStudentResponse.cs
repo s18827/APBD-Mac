@@ -1,6 +1,6 @@
 using System;
 
-namespace Tut10Proj.Models.DTOs.Responses
+namespace Tut10Proj.DTOs.Responses
 {
     public class AddStudentResponse
     {

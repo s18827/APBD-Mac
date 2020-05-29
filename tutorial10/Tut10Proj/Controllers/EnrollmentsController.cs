@@ -1,9 +1,9 @@
 using System;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-using Tut10Proj.Models.DTOs.Requests;
-using Tut10Proj.Models.DTOs.Responses;
-using Tut10Proj.Models;
+using Tut10Proj.DTOs.Requests;
+using Tut10Proj.DTOs.Responses;
+using Tut10Proj.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Tut10Proj.Services;
 using Microsoft.Extensions.Configuration;

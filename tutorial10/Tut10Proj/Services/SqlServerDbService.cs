@@ -1,10 +1,10 @@
 using System.Data;
 using System.Collections.Generic;
-using Tut10Proj.Models;
+using Tut10Proj.Entities;
 using System.Linq;
-using Tut10Proj.Models.DTOs.Requests;
+using Tut10Proj.DTOs.Requests;
 using System;
-using Tut10Proj.Models.DTOs.Responses;
+using Tut10Proj.DTOs.Responses;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
