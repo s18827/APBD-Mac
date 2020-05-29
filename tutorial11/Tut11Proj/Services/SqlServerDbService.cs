@@ -18,10 +18,10 @@ namespace Tut11Proj.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Patient>> ListPatients()
+        public async Task<IEnumerable<Doctor>> ListDoctors()
         {
-            var studentsList = await _context.Patients.ToListAsync();
-            return studentsList;
+            var doctorsList = await _context.Doctors.ToListAsync();
+            return doctorsList;
         }
 
     }

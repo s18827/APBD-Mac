@@ -10,8 +10,8 @@ using Tut11Proj.Entities;
 namespace Tut11Proj.Migrations
 {
     [DbContext(typeof(s18827DbContext))]
-    [Migration("20200529110338_AddedPrescriptions_MedicamentsTable")]
-    partial class AddedPrescriptions_MedicamentsTable
+    [Migration("20200529133525_InsertedMockDataToDoctor")]
+    partial class InsertedMockDataToDoctor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,15 +33,40 @@ namespace Tut11Proj.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("IdDoctor");
 
                     b.ToTable("Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            IdDoctor = 1,
+                            Email = "asds@sda.com",
+                            FirstName = "aaaa",
+                            LastName = "xxx"
+                        },
+                        new
+                        {
+                            IdDoctor = 2,
+                            Email = "asds@sda.com",
+                            FirstName = "bbbb",
+                            LastName = "yyyy"
+                        },
+                        new
+                        {
+                            IdDoctor = 3,
+                            Email = "asds@sda.com",
+                            FirstName = "cccc",
+                            LastName = "zzzz"
+                        });
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Medicament", b =>
@@ -56,7 +81,8 @@ namespace Tut11Proj.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -78,11 +104,13 @@ namespace Tut11Proj.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("IdPatient");
 
@@ -105,7 +133,7 @@ namespace Tut11Proj.Migrations
                     b.Property<int?>("IdDoctor")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdPatient")
+                    b.Property<int>("IdPatient")
                         .HasColumnType("int");
 
                     b.HasKey("IdPrescription");
@@ -122,16 +150,17 @@ namespace Tut11Proj.Migrations
                     b.Property<int>("IdMedicament")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdPrescription")
+                        .HasColumnType("int");
+
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Dose")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(250);
 
-                    b.Property<int>("IdPrescription")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdMedicament");
+                    b.HasKey("IdMedicament", "IdPrescription");
 
                     b.HasIndex("IdPrescription");
 
@@ -146,7 +175,9 @@ namespace Tut11Proj.Migrations
 
                     b.HasOne("Tut11Proj.Entities.Patient", "Patient")
                         .WithMany("Precriptions")
-                        .HasForeignKey("IdPatient");
+                        .HasForeignKey("IdPatient")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Prescription_Medicament", b =>

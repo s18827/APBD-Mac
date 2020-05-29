@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Tut11Proj.Models;
+using Tut11Proj.Entities;
 
 namespace Tut11Proj.Migrations
 {
@@ -21,7 +21,7 @@ namespace Tut11Proj.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Tut11Proj.Models.Doctor", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Doctor", b =>
                 {
                     b.Property<int>("IdDoctor")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace Tut11Proj.Migrations
                     b.ToTable("Doctors");
                 });
 
-            modelBuilder.Entity("Tut11Proj.Models.Patient", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Patient", b =>
                 {
                     b.Property<int>("IdPatient")
                         .ValueGeneratedOnAdd()

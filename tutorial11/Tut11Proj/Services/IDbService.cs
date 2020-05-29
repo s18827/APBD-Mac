@@ -7,7 +7,7 @@ namespace Tut11Proj.Services
 {
     public interface IDbService
     {
-        Task<IEnumerable<Patient>> ListPatients();
+        Task<IEnumerable<Doctor>> ListDoctors();
 
     }
 }

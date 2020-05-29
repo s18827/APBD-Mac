@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Tut11Proj.Models;
+using Tut11Proj.Entities;
 
 namespace Tut11Proj.Migrations
 {
@@ -21,7 +21,7 @@ namespace Tut11Proj.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Tut11Proj.Models.Doctor", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Doctor", b =>
                 {
                     b.Property<int>("IdDoctor")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace Tut11Proj.Migrations
                     b.ToTable("Doctors");
                 });
 
-            modelBuilder.Entity("Tut11Proj.Models.Medicament", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Medicament", b =>
                 {
                     b.Property<int>("IdMedicament")
                         .ValueGeneratedOnAdd()
@@ -66,7 +66,7 @@ namespace Tut11Proj.Migrations
                     b.ToTable("Medicaments");
                 });
 
-            modelBuilder.Entity("Tut11Proj.Models.Patient", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Patient", b =>
                 {
                     b.Property<int>("IdPatient")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace Tut11Proj.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("Tut11Proj.Models.Prescription", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Prescription", b =>
                 {
                     b.Property<int>("IdPrescription")
                         .ValueGeneratedOnAdd()
@@ -119,15 +119,15 @@ namespace Tut11Proj.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("Tut11Proj.Models.Prescription", b =>
+            modelBuilder.Entity("Tut11Proj.Entities.Prescription", b =>
                 {
-                    b.HasOne("Tut11Proj.Models.Doctor", "Doctor")
+                    b.HasOne("Tut11Proj.Entities.Doctor", "Doctor")
                         .WithMany("Precriptions")
                         .HasForeignKey("IdDoctor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tut11Proj.Models.Patient", "Patient")
+                    b.HasOne("Tut11Proj.Entities.Patient", "Patient")
                         .WithMany("Precriptions")
                         .HasForeignKey("IdPatient")
                         .OnDelete(DeleteBehavior.Cascade)

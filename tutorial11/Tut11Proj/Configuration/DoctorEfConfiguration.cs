@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tut11Proj.Entities;
@@ -15,7 +16,6 @@ namespace Tut11Proj.Configuration
             builder.Property(d => d.FirstName).HasMaxLength(100).IsRequired();
 
             builder.Property(d => d.LastName).HasMaxLength(100).IsRequired();
-
         }
     }
 }

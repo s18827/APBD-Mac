@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Tut11Proj.Configuration;
 
@@ -22,6 +23,8 @@ namespace Tut11Proj.Entities
         // Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { // to not mix bussiness logic with DataAdnotations
+
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new PatientEfConfiguration());
 
@@ -49,6 +52,12 @@ namespace Tut11Proj.Entities
             //             .WithMany(pr => pr.Prescriptions_Medicaments)
             //             .HasForeignKey(pr_m => pr_m.IdPrescription);
 
+            var mock = new List<Doctor>();
+            mock.Add(new Doctor { IdDoctor = 1, FirstName = "aaaa", LastName = "xxx", Email = "asds@sda.com", Precriptions = null });
+            mock.Add(new Doctor { IdDoctor = 2, FirstName = "bbbb", LastName = "yyyy", Email = "asds@sda.com", Precriptions = null });
+            mock.Add(new Doctor { IdDoctor = 3, FirstName = "cccc", LastName = "zzzz", Email = "asds@sda.com", Precriptions = null });
+
+            modelBuilder.Entity<Doctor>().HasData(mock);
         }
     }
 }

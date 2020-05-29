@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tut11Proj.Services;
-using Tut11Proj.Models;
+using Tut11Proj.Entities;
 
 namespace Tut11Proj
 {
@@ -28,7 +28,7 @@ namespace Tut11Proj
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IDbService, SqlServerDbService>(); // ADDED
-            // services.AddDbContext<s18827DbContext>(); // ADDED
+            // services.AddDbContext<s18827DbContext>(); // ADDED, but below better
             services.AddDbContext<s18827DbContext>(options => // ADDED
             {
                 options.UseSqlServer("Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin");
