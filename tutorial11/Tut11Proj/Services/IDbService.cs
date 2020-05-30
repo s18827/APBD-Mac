@@ -14,7 +14,8 @@ namespace Tut11Proj.Services
         Task<Doctor> GetDoctor(int idDoctor);
 
         // Task<string> GetDoctorEmail(int idDoctor);
-        
+        Task<Doctor> GetDocWithEmail(string email);
+
         Task<Doctor> AddDoctor(Doctor doctor);
 
         Task ModifyDoctor(Doctor doctor);
