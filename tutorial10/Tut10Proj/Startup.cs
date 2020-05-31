@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Tut10Proj.Models;
+using Tut10Proj.Entities;
 using Tut10Proj.Services;
 
 namespace Tut10Proj
