@@ -10,8 +10,8 @@ using Tut11Proj.Entities;
 namespace Tut11Proj.Migrations
 {
     [DbContext(typeof(s18827DbContext))]
-    [Migration("20200529133525_InsertedMockDataToDoctor")]
-    partial class InsertedMockDataToDoctor
+    [Migration("20200601183115_AddedSampleData")]
+    partial class AddedSampleData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,9 +24,7 @@ namespace Tut11Proj.Migrations
             modelBuilder.Entity("Tut11Proj.Entities.Doctor", b =>
                 {
                     b.Property<int>("IdDoctor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -72,9 +70,7 @@ namespace Tut11Proj.Migrations
             modelBuilder.Entity("Tut11Proj.Entities.Medicament", b =>
                 {
                     b.Property<int>("IdMedicament")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -84,20 +80,27 @@ namespace Tut11Proj.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdMedicament");
 
                     b.ToTable("Medicaments");
+
+                    b.HasData(
+                        new
+                        {
+                            IdMedicament = 1,
+                            Description = "desc",
+                            Name = "medicament",
+                            Type = "type"
+                        });
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Patient", b =>
                 {
                     b.Property<int>("IdPatient")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
@@ -115,14 +118,21 @@ namespace Tut11Proj.Migrations
                     b.HasKey("IdPatient");
 
                     b.ToTable("Patients");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPatient = 1,
+                            Birthdate = new DateTime(2000, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "ala",
+                            LastName = "makota"
+                        });
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Prescription", b =>
                 {
                     b.Property<int>("IdPrescription")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -143,6 +153,16 @@ namespace Tut11Proj.Migrations
                     b.HasIndex("IdPatient");
 
                     b.ToTable("Prescriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPrescription = 1,
+                            Date = new DateTime(2020, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2020, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdDoctor = 1,
+                            IdPatient = 1
+                        });
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Prescription_Medicament", b =>
@@ -165,6 +185,14 @@ namespace Tut11Proj.Migrations
                     b.HasIndex("IdPrescription");
 
                     b.ToTable("Prescriptions_Medicaments");
+
+                    b.HasData(
+                        new
+                        {
+                            IdMedicament = 1,
+                            IdPrescription = 1,
+                            Dose = 0
+                        });
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Prescription", b =>

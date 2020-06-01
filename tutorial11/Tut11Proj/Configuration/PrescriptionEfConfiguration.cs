@@ -10,7 +10,9 @@ namespace Tut11Proj.Configuration
         {
             builder.HasKey(pr => pr.IdPrescription);
 
-            builder.Property(pr => pr.IdPrescription).ValueGeneratedOnAdd();
+            // builder.Property(pr => pr.IdPrescription).ValueGeneratedOnAdd();
+            builder.Property(pr => pr.IdPrescription).ValueGeneratedNever();
+
 
             builder.Property(pr => pr.Date).IsRequired();
 

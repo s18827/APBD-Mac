@@ -9,9 +9,13 @@ namespace Tut11Proj.Configuration
     {
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
-            builder.HasKey(d => d.IdDoctor);
+            // builder.HasKey(d => d.IdDoctor);
+            // builder.Property(d => d.IdDoctor)
+            // .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            // builder.Property(d => d.IdDoctor).ValueGeneratedOnAdd();
 
-            builder.Property(d => d.IdDoctor).ValueGeneratedOnAdd();
+            builder.HasKey(d => d.IdDoctor);
+            builder.Property(d => d.IdDoctor).ValueGeneratedNever();
 
             builder.Property(d => d.FirstName).HasMaxLength(100).IsRequired();
 

@@ -32,13 +32,13 @@ namespace Tut11Proj.Controllers
                 var doctorsList = await _service.ListDoctors();
                 return Ok(doctorsList);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.StackTrace);
             }
         }
 
-        [HttpGet("idDoctor")]
+        [HttpGet("{idDoctor}")]
         public async Task<IActionResult> GetDoctor(int idDoctor)
         {
             try
@@ -46,9 +46,14 @@ namespace Tut11Proj.Controllers
                 var doctor = await _service.GetDoctor(idDoctor);
                 return Ok(doctor);
             }
-            catch (Exception)
+            catch (AggregateException ae)
             {
-                return NotFound();
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is ArgumentNullException) return NotFound("Doctor with given id not found");
+                    else return BadRequest(e.StackTrace);
+                }
+                return null;
             }
         }
 
@@ -58,8 +63,8 @@ namespace Tut11Proj.Controllers
         {
             try
             {
-                var response = await _service.AddDoctor(doctor); // make it return entity of added student to be printed in Ok(...);
-                return CreatedAtAction("AddDoctor", response);
+                var newDoc = await _service.AddDoctor(doctor);
+                return CreatedAtAction("AddDoctor", newDoc);
             }
             catch (AggregateException ae)
             {
@@ -74,14 +79,14 @@ namespace Tut11Proj.Controllers
         }
 
         [HttpPut("{idDoctor}")]
-        public async Task<IActionResult> ModifyDoctor(Doctor doctor)
+        public async Task<IActionResult> ModifyDoctor(int idDoctor, EditDoctorRequest request)
         {
             try
             {
-                await _service.ModifyDoctor(doctor);
+                await _service.ModifyDoctor(idDoctor, request);
                 return NoContent();
             }
-             catch (AggregateException ae)
+            catch (AggregateException ae)
             {
                 foreach (var e in ae.InnerExceptions)
                 {
@@ -92,7 +97,7 @@ namespace Tut11Proj.Controllers
                 return null;
             }
         }
-        
+
 
         [HttpDelete("{idDoctor}")]
         public async Task<IActionResult> DeleteDoctor(int idDoctor)

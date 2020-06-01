@@ -10,8 +10,8 @@ using Tut11Proj.Entities;
 namespace Tut11Proj.Migrations
 {
     [DbContext(typeof(s18827DbContext))]
-    [Migration("20200529110338_AddedPrescriptions_MedicamentsTable")]
-    partial class AddedPrescriptions_MedicamentsTable
+    [Migration("20200601160642_DbBuild")]
+    partial class DbBuild
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,20 +24,20 @@ namespace Tut11Proj.Migrations
             modelBuilder.Entity("Tut11Proj.Entities.Doctor", b =>
                 {
                     b.Property<int>("IdDoctor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("IdDoctor");
 
@@ -47,16 +47,15 @@ namespace Tut11Proj.Migrations
             modelBuilder.Entity("Tut11Proj.Entities.Medicament", b =>
                 {
                     b.Property<int>("IdMedicament")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -69,20 +68,20 @@ namespace Tut11Proj.Migrations
             modelBuilder.Entity("Tut11Proj.Entities.Patient", b =>
                 {
                     b.Property<int>("IdPatient")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("IdPatient");
 
@@ -92,9 +91,7 @@ namespace Tut11Proj.Migrations
             modelBuilder.Entity("Tut11Proj.Entities.Prescription", b =>
                 {
                     b.Property<int>("IdPrescription")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -105,7 +102,7 @@ namespace Tut11Proj.Migrations
                     b.Property<int?>("IdDoctor")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdPatient")
+                    b.Property<int>("IdPatient")
                         .HasColumnType("int");
 
                     b.HasKey("IdPrescription");
@@ -122,16 +119,17 @@ namespace Tut11Proj.Migrations
                     b.Property<int>("IdMedicament")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdPrescription")
+                        .HasColumnType("int");
+
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Dose")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(250);
 
-                    b.Property<int>("IdPrescription")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdMedicament");
+                    b.HasKey("IdMedicament", "IdPrescription");
 
                     b.HasIndex("IdPrescription");
 
@@ -146,7 +144,9 @@ namespace Tut11Proj.Migrations
 
                     b.HasOne("Tut11Proj.Entities.Patient", "Patient")
                         .WithMany("Precriptions")
-                        .HasForeignKey("IdPatient");
+                        .HasForeignKey("IdPatient")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tut11Proj.Entities.Prescription_Medicament", b =>

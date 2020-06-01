@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tut11Proj.DTOs.Requests;
-using Tut11Proj.DTOs.Responses;
 using Tut11Proj.Entities;
 
 namespace Tut11Proj.Services
@@ -13,12 +12,13 @@ namespace Tut11Proj.Services
 
         Task<Doctor> GetDoctor(int idDoctor);
 
-        // Task<string> GetDoctorEmail(int idDoctor);
-        Task<Doctor> GetDocWithEmail(string email);
+        Task<Doctor> GetDoctorWhereId(int idDoctor);
+
+        Task<Doctor> GetDocWhereEmail(string email);
 
         Task<Doctor> AddDoctor(Doctor doctor);
 
-        Task ModifyDoctor(Doctor doctor);
+        Task ModifyDoctor(int idDoctor, EditDoctorRequest doctor);
 
         Task DeleteDoctor(int idDoctor);
         

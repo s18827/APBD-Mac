@@ -10,7 +10,8 @@ namespace Tut11Proj.Configuration
         {
             builder.HasKey(p => p.IdPatient);
 
-            builder.Property(p => p.IdPatient).ValueGeneratedOnAdd();
+            // builder.Property(p => p.IdPatient).ValueGeneratedOnAdd();
+            builder.Property(p => p.IdPatient).ValueGeneratedNever();
 
             builder.Property(p => p.FirstName).HasMaxLength(100).IsRequired();
 

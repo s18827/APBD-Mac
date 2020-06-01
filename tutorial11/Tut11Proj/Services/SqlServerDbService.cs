@@ -6,7 +6,6 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
-using Tut11Proj.DTOs.Responses;
 using Tut11Proj.DTOs.Requests;
 
 namespace Tut11Proj.Services
@@ -26,23 +25,31 @@ namespace Tut11Proj.Services
             return doctorsList;
         }
 
-        public Task<Doctor> GetDoctor(int idDoctor)
+        public async Task<Doctor> GetDoctor(int idDoctor)
         {
-            return _context.Doctors.FirstOrDefaultAsync(d => d.IdDoctor == idDoctor);
+            var doc = await GetDoctorWhereId(idDoctor);
+            if (doc == null) throw new ArgumentNullException("Doctor with given id not found");
+            return doc;
         }
 
-        public async Task<Doctor> GetDocWithEmail(string email)
+        public Task<Doctor> GetDoctorWhereId(int idDoctor)
         {
-            var doc = await _context.Doctors.Where(d => d.Email == email).FirstOrDefaultAsync();
-            return doc;
+            var res = _context.Doctors.FirstOrDefaultAsync(d => d.IdDoctor == idDoctor);
+            return res;
+        }
+
+        public Task<Doctor> GetDocWhereEmail(string email)
+        {
+            var res = _context.Doctors.FirstOrDefaultAsync(d => d.Email == email);
+            return res;
         }
 
         public async Task<Doctor> AddDoctor(Doctor doctor)
         {
-            // var doc = await GetDoctor(doctor.IdDoctor);
-            if (doctor != null) throw new ArgumentNullException("Doctor with given id already exists");
+            var doc = await GetDoctorWhereId(doctor.IdDoctor);
+            if (doc != null) throw new ArgumentNullException("Doctor with given id already exists");
 
-            var emailCheck = doctor.Email;
+            var emailCheck = await GetDocWhereEmail(doctor.Email);
             if (emailCheck != null) throw new ArgumentException("This email is already taken");
 
             // var newDoctor = new Doctor
@@ -52,23 +59,32 @@ namespace Tut11Proj.Services
             //     LastName = doctor.LastName,
             //     Email = doctor.Email
             // };
-            _context.Doctors.Add(doctor);
+            // _context.Entry(doctor).State= EntityState.Unchanged;
+            _context.Entry(doctor).State = EntityState.Added;
+            // _context.Entry(newDoctor.Precriptions).State= EntityState.Unchanged;
             await _context.SaveChangesAsync();
             return doctor;
         }
 
-        public async Task ModifyDoctor(Doctor doctor)
+        public async Task ModifyDoctor(int idDoctor, EditDoctorRequest request)
         {
-            if (doctor == null) throw new ArgumentNullException("Doctor with given id not found");
-            var emailCheck = GetDocWithEmail(doctor.Email);
+            var doc = await GetDoctorWhereId(idDoctor);
+            if (doc == null) throw new ArgumentNullException("Doctor with given id not found");
+            var emailCheck = await GetDocWhereEmail(request.Email);
             if (emailCheck != null) throw new ArgumentException("This email is already taken");
+
+            var doctor = doc;
+            doctor.IdDoctor = idDoctor;
+            if (request.FirstName != null) doctor.FirstName = request.FirstName;
+            if (request.LastName != null) doctor.LastName = request.LastName;
+            if (request.Email != null) doc.Email = request.Email;
             _context.Entry(doctor).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDoctor(int idDoctor)
         {
-            var doctor = await GetDoctor(idDoctor);
+            var doctor = await GetDoctorWhereId(idDoctor);
             if (doctor == null) throw new ArgumentNullException("Doctor with given id not found");
             _context.Entry(doctor).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
