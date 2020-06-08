@@ -18,14 +18,13 @@ namespace ExTest2.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        [HttpGet("{custName}")]
-        public async Task<IActionResult> ListOrders(string custName)
+        [HttpGet] // to call: /api/orders?name=<name>
+        public async Task<IActionResult> ListOrders(string name)
         {
             try
             {
-                var ordersList = await _service.ListOrders(custName);
-                return Ok(ordersList);
+                var ordersRespList = await _service.ListOrders(name);
+                return Ok(ordersRespList);
             }
             catch (AggregateException ae)
             {

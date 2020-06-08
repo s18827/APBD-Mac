@@ -32,7 +32,9 @@ namespace ExTest2
             {
                 options.UseSqlServer("Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18827;User ID=apbds18827;Password=admin");
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => // ADDED
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

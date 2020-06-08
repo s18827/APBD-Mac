@@ -7,9 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-// PACKAGE ADDED: Microsoft.EntityFrameworkCore 3.1.3
-// PACKAGE ADDED: Microsoft.EntityFrameworkCore.SqlServer 3.1.3
-// PACKAGE ADDED: Microsoft.EntityFrameworkCore.Tools 3.1.3
+// PACKAGE ADDED: Microsoft.EntityFrameworkCore 3.1.4
+// PACKAGE ADDED: Microsoft.EntityFrameworkCore.SqlServer 3.1.4
+// PACKAGE ADDED: Microsoft.EntityFrameworkCore.Tools 3.1.4
+// PACKAGE ADDED: Microsoft.AspNetCore.Mvc.NewtonsoftJson 3.1.4
 namespace ExTest2
 {
     public class Program
