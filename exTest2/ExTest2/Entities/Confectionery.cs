@@ -13,6 +13,6 @@ namespace ExTest2.Entities
 
         public string Type { get; set; }
 
-        public ICollection<Confectionery_Order> Confectioneries_Orders { get; set; }
+        public virtual ICollection<Confectionery_Order> Confectioneries_Orders { get; set; }
     }
 }

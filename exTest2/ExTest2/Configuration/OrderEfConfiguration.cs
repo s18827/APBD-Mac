@@ -13,7 +13,7 @@ namespace ExTest2.Configuration
 
             builder.Property(o => o.DateAccepted).IsRequired();
 
-            builder.Property(o => o.DateFinished).IsRequired();
+            builder.Property(o => o.DateFinished).HasDefaultValue(null);
 
             builder.Property(o => o.Notes).HasMaxLength(255);
             

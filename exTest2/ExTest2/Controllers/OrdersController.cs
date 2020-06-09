@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using ExTest2.DTOs.Requests;
 using ExTest2.Entities;
 using ExTest2.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,26 @@ namespace ExTest2.Controllers
                 foreach (var e in ae.InnerExceptions)
                 {
                     if (e is ArgumentNullException) return NotFound("Customer with given name not found");
+                    else return BadRequest(e.StackTrace);
+                }
+                return null;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOrder(AddOrderRequest newOrder)
+        {
+            try
+            {
+                var response = await _service.AddOrder(newOrder);
+                return Ok(response);
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is ArgumentNullException) return NotFound(e.Message);
+                    if (e is ArgumentException) return BadRequest();
                     else return BadRequest(e.StackTrace);
                 }
                 return null;

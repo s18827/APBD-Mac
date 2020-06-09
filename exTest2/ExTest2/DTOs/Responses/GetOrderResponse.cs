@@ -2,7 +2,7 @@ using System;
 
 namespace ExTest2.DTOs.Responses
 {
-    public class OrderResponse
+    public class GetOrderResponse
     {
         public int IdOrder { get; set; }
 

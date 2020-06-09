@@ -6,10 +6,10 @@ namespace ExTest2.Entities
     {
         public int IdConfectionery { get; set; }
 
-        public virtual Confectionery Confectionery { get; set; }
+        public Confectionery Confectionery { get; set; }
         public int IdOrder { get; set; }
 
-        public virtual Order Order { get; set; }
+        public Order Order { get; set; }
         public int Quantity { get; set; }
         public string Notes { get; set; }
     }

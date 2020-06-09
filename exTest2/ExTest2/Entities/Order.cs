@@ -14,12 +14,12 @@ namespace ExTest2.Entities
         public string Notes { get; set; }
 
         public int IdCustomer { get; set; }
-        public virtual Customer Customer { get; set; }
+        public Customer Customer { get; set; }
 
         public int IdEmployee { get; set; }
-        public virtual Employee Employee { get; set; }
+        public Employee Employee { get; set; }
 
-        public ICollection<Confectionery_Order> Confectioneries_Orders { get; set; }
+        public virtual ICollection<Confectionery_Order> Confectioneries_Orders { get; set; }
 
     }
 }
