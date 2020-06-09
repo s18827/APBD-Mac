@@ -4,14 +4,16 @@ using ExTest2.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ExTest2.Migrations
 {
     [DbContext(typeof(s18827DbContext))]
-    partial class s18827DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609190553_OrderDateFinishedModif")]
+    partial class OrderDateFinishedModif
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,10 +118,10 @@ namespace ExTest2.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValue(null);
 
-                    b.Property<int?>("IdCustomer")
+                    b.Property<int>("IdCustomer")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdEmployee")
+                    b.Property<int>("IdEmployee")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -154,11 +156,15 @@ namespace ExTest2.Migrations
                 {
                     b.HasOne("ExTest2.Entities.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("IdCustomer");
+                        .HasForeignKey("IdCustomer")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ExTest2.Entities.Employee", "Employee")
                         .WithMany("Orders")
-                        .HasForeignKey("IdEmployee");
+                        .HasForeignKey("IdEmployee")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

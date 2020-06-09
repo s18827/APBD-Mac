@@ -39,12 +39,12 @@ namespace ExTest2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder(AddOrderRequest newOrder)
+        public async Task<IActionResult> AddOrder(AddOrderRequest request)
         {
             try
             {
-                var response = await _service.AddOrder(newOrder);
-                return Ok(response);
+                var newOrder = await _service.AddOrder(request);
+                return Ok(newOrder);
             }
             catch (AggregateException ae)
             {

@@ -13,7 +13,14 @@ namespace ExTest2.Services
 
         Task<Customer> GetCustomerWhereName(string name);
 
-        Task<GetOrderResponse> AddOrder(AddOrderRequest newOrder);
+        Task<Order> AddOrder(AddOrderRequest newOrder);
 
+        Task<Confectionery_Order> CreateNewCon_Ord(int idConfectionery, int idOrder, int quantity, string notes);
+
+        Task<Confectionery> GetConfectioneryWhereName(string name);
+
+        Task<Order> CreateNewOrder(DateTime dateAccepted, string notes);
+
+        Task<int> GetMaxIdOrder();
     }
 }

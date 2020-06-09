@@ -29,10 +29,10 @@ namespace ExTest2.Services
             {
                 IdOrder = or.IdOrder,
                 DateAccepted = or.DateAccepted,
-                DateFinished = or.DateFinished,
+                DateFinished = (DateTime)or.DateFinished,
                 Notes = or.Notes,
-                IdCustomer = or.IdCustomer,
-                IdEmployee = or.IdEmployee
+                IdCustomer = (int)or.IdCustomer,
+                IdEmployee = (int)or.IdEmployee
             }).ToListAsync();
             else
             {
@@ -43,10 +43,10 @@ namespace ExTest2.Services
                 {
                     IdOrder = or.IdOrder,
                     DateAccepted = or.DateAccepted,
-                    DateFinished = or.DateFinished,
+                    DateFinished = (DateTime)or.DateFinished,
                     Notes = or.Notes,
-                    IdCustomer = or.IdCustomer,
-                    IdEmployee = or.IdEmployee
+                    IdCustomer = (int)or.IdCustomer,
+                    IdEmployee = (int)or.IdEmployee
                 }).ToListAsync();
             }
             return ordersRespList;
@@ -58,20 +58,35 @@ namespace ExTest2.Services
             return cust;
         }
 
-        public async Task<GetOrderResponse> AddOrder(AddOrderRequest request)
+        public async Task<Order> AddOrder(AddOrderRequest request)
         {
-            GetOrderResponse resp = null;
+            Order newOrder = await CreateNewOrder(request.DateAccepted, request.Notes);
+            var idNewOrd = newOrder.IdOrder;
 
-            List<string> missingProd = null;
             foreach (ConfectioneryProduct cp in request.Confectionery)
             {
-                missingProd = new List<string>();
-                var product = await GetConfectioneryWhereName(cp.Name);
-                if (product == null) missingProd.Add(product.Name);
-                if (missingProd.Count != 0) throw new ArgumentNullException("Confectioneries: {" + string.Join(", ", missingProd) + "} not found");
+                var confProd = await GetConfectioneryWhereName(cp.Name);
+                if (confProd == null) throw new ArgumentNullException("At least one Confectionery not found. Missing Confectionery: " + cp.Name);
+
+                var idConf = confProd.IdConfectionery;
+                var newCon_Or = await CreateNewCon_Ord(idConf, idNewOrd, cp.Quantity, cp.Notes);
             }
 
-            return resp;
+            return newOrder;
+        }
+
+        public async Task<Confectionery_Order> CreateNewCon_Ord(int idConfectionery, int idOrder, int quantity, string notes)
+        {
+            var newCon_ord = new Confectionery_Order
+            {
+                IdConfectionery = idConfectionery,
+                IdOrder = idOrder,
+                Quantity = quantity,
+                Notes = notes
+            };
+            _context.Entry(newCon_ord).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return newCon_ord;
         }
 
         public Task<Confectionery> GetConfectioneryWhereName(string name)
@@ -79,9 +94,27 @@ namespace ExTest2.Services
             var conf = _context.Confectioneries.FirstOrDefaultAsync(c => c.Name == name);
             return conf;
         }
-        public Task<Order> CreateOrder(DateTime dateAccepted, string notes, Confectionery_Order co_or)
+        public async Task<Order> CreateNewOrder(DateTime dateAccepted, string notes)
         {
+            var newIdOrder = await GetMaxIdOrder() + 1;
 
+            var newOrder = new Order
+            {
+                IdOrder = newIdOrder,
+                DateAccepted = dateAccepted,
+                Notes = notes
+                // IdCustomer = ,
+                // IdEmployee = 
+            };
+            _context.Entry(newOrder).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return newOrder;
+        }
+
+        public Task<int> GetMaxIdOrder()
+        {
+            var res = _context.Orders.Select(o => o.IdOrder).MaxAsync();
+            return res;
         }
     }
 }

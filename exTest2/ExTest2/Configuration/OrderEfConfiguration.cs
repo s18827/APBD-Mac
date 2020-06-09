@@ -16,7 +16,7 @@ namespace ExTest2.Configuration
             builder.Property(o => o.DateFinished).HasDefaultValue(null);
 
             builder.Property(o => o.Notes).HasMaxLength(255);
-            
+
             builder.HasOne(o => o.Customer)
                         .WithMany(c => c.Orders)
                         .HasForeignKey(o => o.IdCustomer);

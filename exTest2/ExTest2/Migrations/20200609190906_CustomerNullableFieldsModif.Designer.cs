@@ -4,14 +4,16 @@ using ExTest2.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ExTest2.Migrations
 {
     [DbContext(typeof(s18827DbContext))]
-    partial class s18827DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609190906_CustomerNullableFieldsModif")]
+    partial class CustomerNullableFieldsModif
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
