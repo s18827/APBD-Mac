@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExTest2.Entities
 {
+    [Table("Order")]
     public class Order
     {
         public int IdOrder { get; set; }

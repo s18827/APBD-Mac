@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExTest2.Entities
 {
+    [Table("Confectionery_Order")]
     public class Confectionery_Order
     {
         public int IdConfectionery { get; set; }
