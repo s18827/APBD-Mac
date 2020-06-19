@@ -92,6 +92,7 @@ namespace Test2.Services
             _context.Entry(newPet).State = EntityState.Added;
             await _context.SaveChangesAsync();
 
+            if (newPet == null) throw new ArgumentException();
             return newPet;
         }
 
